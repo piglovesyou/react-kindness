@@ -1,0 +1,31 @@
+{
+  "name": "react-kindness",
+  "version": "0.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piglovesyou/react-kindness.git"
+  },
+  "keywords": [
+    "react",
+    "instruction",
+    "tutorial",
+    "introduction",
+    "spot",
+    "focus",
+    "demo"
+  ],
+  "author": "thepiglovesyou@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/piglovesyou/react-kindness/issues"
+  },
+  "homepage": "https://github.com/piglovesyou/react-kindness#readme"
+}

@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "no-unused-expressions": "off",
+    "react/no-multi-comp": "off",
+    "react/prefer-es6-class": "off",
+    "react/prefer-stateless-function": "off"
+  }
+}
