@@ -1,9 +1,16 @@
 {
   "presets": [
-    "react",
-    "latest"
+    "@babel/preset-env",
+    "@babel/preset-react",
+    "@babel/preset-flow",
+    [
+      "@babel/preset-stage-2",
+      {
+        "decoratorsLegacy": true
+      }
+    ]
   ],
   "plugins": [
-    "transform-runtime"
+    "@babel/plugin-transform-runtime"
   ]
 }

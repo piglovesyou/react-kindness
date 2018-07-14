@@ -1,0 +1,7 @@
+# mocha.opts
+
+  --require @babel/register
+  --reporter dot
+  --ui bdd
+  --recursive ./src/**/*.spec.js
+  --exit

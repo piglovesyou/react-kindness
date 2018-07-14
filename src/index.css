@@ -1,0 +1,218 @@
+:root {
+  --transition-delay: 0.4s;
+  --arrow-height: 5px;
+  --spot-margin: 8px;
+}
+
+/*******************************************************************************
+ * Commons
+ */
+.react-kindness__overlay,
+.react-kindness-panel {
+  z-index: 1000;
+}
+
+.react-kindness__overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/*******************************************************************************
+ * Overlay
+ */
+.react-kindness__overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity linear var(--transition-delay);
+}
+
+.react-kindness--exit-done .react-kindness__overlay {
+  display: none;
+}
+
+.react-kindness--enter .react-kindness__overlay {
+  opacity: 0;
+}
+
+.react-kindness--enter-active .react-kindness__overlay,
+.react-kindness--enter-done .react-kindness__overlay {
+  opacity: 1 !important;
+}
+
+.react-kindness--exit .react-kindness__overlay {
+  opacity: 0
+}
+
+.react-kindness--exit-active .react-kindness__overlay,
+.react-kindness--exit-done .react-kindness__overlay {
+  opacity: 0;
+}
+
+/*******************************************************************************
+ * Spot
+ */
+
+.react-kindness--enter-active {
+  transition: none;
+}
+
+.react-kindness--enter-done .react-kindness__spot {
+  transition: x var(--transition-delay),
+  y var(--transition-delay),
+  cx var(--transition-delay),
+  cy var(--transition-delay);
+}
+
+/*******************************************************************************
+ * Panel
+ */
+
+.react-kindness-panel {
+  box-sizing: border-box;
+  max-width: 40vw;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, .4);
+}
+
+/*let's dont do this.*/
+/*.react-kindness--enter-done .react-kindness-panel {*/
+  /*transition: transform var(--transition-delay);*/
+/*}*/
+
+/*******************************************************************************
+ * Popper.js and arrow
+ */
+
+.react-kindness-panel .react-kindness-panel__arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+  margin: 5px;
+}
+
+.react-kindness-panel[x-placement^="top"] {
+  margin-bottom: calc(5px + var(--spot-margin));
+}
+
+.react-kindness-panel[x-placement^="top"] .react-kindness-panel__arrow {
+  border-width: 5px 5px 0 5px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  bottom: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.react-kindness-panel[x-placement^="bottom"] {
+  margin-top: calc(5px + var(--spot-margin));
+}
+
+.react-kindness-panel[x-placement^="bottom"] .react-kindness-panel__arrow {
+  border-width: 0 5px 5px 5px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  top: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.react-kindness-panel[x-placement^="right"] {
+  margin-left: calc(5px + var(--spot-margin));
+}
+
+.react-kindness-panel[x-placement^="right"] .react-kindness-panel__arrow {
+  border-width: 5px 5px 5px 0;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  left: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.react-kindness-panel[x-placement^="left"] {
+  margin-right: calc(5px + var(--spot-margin));
+}
+
+.react-kindness-panel[x-placement^="left"] .react-kindness-panel__arrow {
+  border-width: 5px 0 5px 5px;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  right: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/*******************************************************************************
+ * Preferences
+ */
+
+.react-kindness-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  min-height: 150px;
+  background-color: white;
+}
+.react-kindness-panel__spacer {
+  flex: 1;
+}
+.react-kindness-panel__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+.react-kindness-panel__title {
+  margin: 0 0 10px;
+}
+.react-kindness-panel__message {
+  margin: 0;
+}
+.react-kindness-panel__bottombar {
+  padding: 10px;
+  display: flex;
+  background-color: ghostwhite;
+}
+.react-kindness-panel__bottombar button {
+  padding: 5px;
+}
+.react-kindness-panel__indicator {
+  text-align: center;
+  margin-bottom: -5px;
+}
+.react-kindness-panel__indicator__dot {
+  display: inline-block;
+  padding: 5px 3px;
+  cursor: pointer;
+}
+.react-kindness-panel__indicator__dot--current {
+  cursor: inherit;
+}
+.react-kindness-panel__indicator__dot:before {
+  content: '';
+  background-color: #ccc;
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+.react-kindness-panel__indicator__dot--current:before {
+  background-color: #333;
+}
+.react-kindness-panel__bottombar button:last-child {
+  padding: 5px 24px;
+}
+.react-kindness-panel .react-kindness-panel__arrow {
+  border-color: white;
+}

@@ -1,12 +1,15 @@
-sudo: false
+os:
+  - linux
+
 language: node_js
+
+script:
+#  - npm run lint
+  - npm run test
+# - npm audit
+
 node_js:
   - '10'
   - '9'
   - '8'
-script:
-  - npm run lint
-  - npm run test:cover
-  - npm audit
-after_success:
-  - npm run coveralls
+
