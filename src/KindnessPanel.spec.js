@@ -33,8 +33,8 @@ describe('<KindnessPanel />', function describe() {
       r: Math.floor(Number(el.getAttribute('r'))),
     }));
     deepStrictEqual(type, 'circle');
-    assert(100 < cx && cx < 200);
-    assert(400 < cy && cy < 600);
+    assert(cx > 350 && cx < 450);
+    assert(cy > 50 && cy < 150);
     deepStrictEqual(r, 56);
   });
 });

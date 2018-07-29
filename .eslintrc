@@ -14,5 +14,8 @@
     "jsx-a11y/href-no-hash": "off",
     "react/jsx-filename-extension": "off",
     "no-use-before-define": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+
+    "import/no-cycle": "off", // TODO: fix
   }
 }

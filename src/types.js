@@ -8,4 +8,3 @@ export type KindnessPanelContentProps = {|
   onSkipClick: Function,
   onGoIndexClick: Function,
 |};
-

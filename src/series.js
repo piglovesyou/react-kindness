@@ -1,10 +1,11 @@
-import React from 'react';
+// @flow
+
+import type Kindness from './Kindness';
 
 // ESLint provides an error for opaque
 type SeriesId = string;
 
 export type { SeriesId };
-import Kindness from './Kindness'
 
 export class Series extends Map<number, Kindness> {
   getOrderKeyByIndex(index: number): number {

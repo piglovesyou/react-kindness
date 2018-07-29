@@ -4,15 +4,16 @@ import {
   panelArrowClassName,
   panelClassName,
   panelMessageClassName,
-  panelTitleClassName
+  panelTitleClassName,
 } from './classNames';
-import {KindnessPanelContentProps} from './types';
+import { KindnessPanelContentProps } from './types';
 
 export default class KindnessPanelContent extends React.Component<KindnessPanelContentProps> {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.nextRef =React.createRef();
+    this.nextRef = React.createRef();
   }
+
   componentDidMount() {
     // TODO: Better way
     // Wait for the panel positioning
@@ -20,6 +21,7 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
       this.nextRef.current.focus();
     }, 200);
   }
+
   render() {
     const {
       title,
@@ -34,19 +36,29 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
     return (
       <React.Fragment>
         <div className={`${panelClassName}__content`}>
-          {title && <h3 className={panelTitleClassName}>{title}</h3>}
-          {message && <p className={panelMessageClassName}>{message}</p>}
-          <span className={`${panelClassName}__spacer`}>{''}</span>
+          {title && (
+          <h3 className={panelTitleClassName}>
+            {title}
+          </h3>
+          )}
+          {message && (
+          <p className={panelMessageClassName}>
+            {message}
+          </p>
+          )}
+          <span className={`${panelClassName}__spacer`} />
           <div className={`${panelClassName}__indicator`}>
-            {Array.from(Array(totalSize)).map((_, i) => {
-              return (
-                <span key={i}
-                      onClick={onGoIndexClick.bind(null, i)}
-                      className={classnames(`${panelClassName}__indicator__dot`,
-                        i === currentIndex && `${panelClassName}__indicator__dot--current`)}
-                >{''}</span>
-              );
-            })}
+            {Array.from(Array(totalSize)).map((_, i) => (
+              <button
+                type="button"
+                key={String(i)}
+                onClick={() => onGoIndexClick(i)}
+                className={classnames(`${panelClassName}__indicator__dot`,
+                  i === currentIndex && `${panelClassName}__indicator__dot--current`)}
+              >
+                {''}
+              </button>
+            ))}
           </div>
         </div>
         <div className={`${panelClassName}__bottombar`}>
@@ -58,11 +70,13 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
             )
           }
 
-          <span className={`${panelClassName}__spacer`}>{''}</span>
+          <span className={`${panelClassName}__spacer`}>
+            {''}
+          </span>
           <button
             type="button"
             onClick={onGoPrevClick}
-            {...(onGoPrevClick ? {} : {disabled: true})}
+            {...(onGoPrevClick ? {} : { disabled: true })}
           >
             Prev
           </button>
@@ -82,8 +96,8 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
           className={panelArrowClassName}
           x-arrow="true"
         >
-      {' '}
-    </span>
+          {' '}
+        </span>
       </React.Fragment>
     );
   }

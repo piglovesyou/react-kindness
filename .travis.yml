@@ -4,7 +4,7 @@ os:
 language: node_js
 
 script:
-#  - npm run lint
+  - npm run lint
   - npm run test
 # - npm audit
 

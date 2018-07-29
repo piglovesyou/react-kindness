@@ -75,6 +75,11 @@
   max-width: 40vw;
   box-shadow: 0 2px 3px rgba(0, 0, 0, .4);
 }
+@media screen and (max-width: 480px) {
+  .react-kindness-panel {
+    max-width: calc(100% - 10px);
+  }
+}
 
 /*let's dont do this.*/
 /*.react-kindness--enter-done .react-kindness-panel {*/
@@ -192,7 +197,7 @@
   margin-bottom: -5px;
 }
 .react-kindness-panel__indicator__dot {
-  display: inline-block;
+  border: none;
   padding: 5px 3px;
   cursor: pointer;
 }
