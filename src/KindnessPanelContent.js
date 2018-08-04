@@ -15,10 +15,11 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
   }
 
   componentDidMount() {
-    // TODO: Better way
+    // TODO: Better way?
     // Wait for the panel positioning
     setTimeout(() => {
-      this.nextRef.current.focus();
+      const {current} = this.nextRef;
+      if (current) current.focus();
     }, 200);
   }
 
