@@ -23,7 +23,6 @@ Skip to the content.
 
         <KindnessPanel
           enabled={showKindness}
-          spotType="rect"
           onExit={() => this.setState({ showKindness: false })}
         />
 

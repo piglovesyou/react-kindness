@@ -28,33 +28,49 @@
 }
 
 /*******************************************************************************
- * SVG
+ * Opacity transition of SVG and Panel
  */
+
 .react-kindness__svg {
-  opacity: 0;
   pointer-events: none;
   transition: opacity linear var(--transition-delay);
 }
 
-.react-kindness--exit-done .react-kindness__svg {
+.react-kindness-panel {
+  transition: opacity linear calc(var(--transition-delay) / 2);
+}
+
+.react-kindness__svg,
+.react-kindness-panel {
+  opacity: 0;
+}
+
+.react-kindness--exit-done .react-kindness__svg,
+.react-kindness--exit-done .react-kindness-panel {
   display: none;
 }
 
-.react-kindness--enter .react-kindness__svg {
+.react-kindness--enter .react-kindness__svg,
+.react-kindness--enter .react-kindness-panel {
   opacity: 0;
 }
 
 .react-kindness--enter-active .react-kindness__svg,
-.react-kindness--enter-done .react-kindness__svg {
+.react-kindness--enter-done .react-kindness__svg,
+.react-kindness--enter-active .react-kindness-panel,
+.react-kindness--enter-done .react-kindness-panel {
   opacity: 1 !important;
 }
 
-.react-kindness--exit .react-kindness__svg {
+.react-kindness--exit .react-kindness__svg,
+.react-kindness--exit .react-kindness-panel {
   opacity: 0
 }
 
 .react-kindness--exit-active .react-kindness__svg,
-.react-kindness--exit-done .react-kindness__svg {
+.react-kindness--exit-done .react-kindness__svg,
+.react-kindness--exit-active .react-kindness-panel,
+.react-kindness--exit-done .react-kindness-panel {
   opacity: 0;
 }
 
@@ -89,11 +105,6 @@
     max-width: calc(100% - 10px);
   }
 }
-
-/*let's dont do this.*/
-/*.react-kindness--enter-done .react-kindness-panel {*/
-  /*transition: transform var(--transition-delay);*/
-/*}*/
 
 /*******************************************************************************
  * Popper.js and arrow
@@ -168,7 +179,9 @@
 }
 
 /*******************************************************************************
- * Preferences
+ *
+ * Preferences: You may want to overwrite these styles.
+ *
  */
 
 .react-kindness-panel {

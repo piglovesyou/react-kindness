@@ -194,7 +194,7 @@ five
 
     nextEl.simulate('click');
     await timeout(500); // Wait for transition
-    deepStrictEqual(app.find('.react-kindness-panel__message').length, 0);
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '0');
   });
 
   it('scrolls to the target', async () => {

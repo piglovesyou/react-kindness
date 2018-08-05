@@ -86,8 +86,6 @@ export default class KindnessPanel
 
     if (!prevProps.enabled && enabled) {
       this.updateSpot(spotIndex);
-    } else if (prevProps.enabled && !enabled && this.popper) {
-      this.disposeListeners();
     }
   }
 
@@ -266,17 +264,12 @@ export default class KindnessPanel
                     mask="url(#spot)"
                   />
                 </svg>
-                {enabled
-                  ? (
-                    <div
-                      ref={this.panel}
-                      className={panelClassName}
-                    >
-                      {children(panelContentProps)}
-                    </div>
-                  )
-                  : null
-                }
+                <div
+                  ref={this.panel}
+                  className={panelClassName}
+                >
+                  {children(panelContentProps)}
+                </div>
               </div>
             </React.Fragment>
           )}
