@@ -29,10 +29,10 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
       message,
       totalSize,
       currentIndex,
-      onGoPrevClick,
-      onGoNextClick,
-      onGoIndexClick,
-      onSkipClick,
+      goPrev,
+      goNext,
+      goIndex,
+      skip,
     } = this.props;
     return (
       <React.Fragment>
@@ -53,7 +53,7 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
               <button
                 type="button"
                 key={String(i)}
-                onClick={() => onGoIndexClick(i)}
+                onClick={() => goIndex(i)}
                 className={classnames(`${panelClassName}__indicator__dot`,
                   i === currentIndex && `${panelClassName}__indicator__dot--current`)}
               >
@@ -64,8 +64,8 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
         </div>
         <div className={`${panelClassName}__bottombar`}>
           {
-            onGoNextClick && (
-              <button type="button" onClick={onSkipClick}>
+            goNext && (
+              <button type="button" onClick={skip}>
                 Skip
               </button>
             )
@@ -76,18 +76,18 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
           </span>
           <button
             type="button"
-            onClick={onGoPrevClick}
-            {...(onGoPrevClick ? {} : { disabled: true })}
+            onClick={goPrev}
+            {...(goPrev ? {} : { disabled: true })}
           >
             Prev
           </button>
           {
-            onGoNextClick ? (
-              <button type="button" onClick={onGoNextClick} ref={this.nextRef}>
+            goNext ? (
+              <button type="button" onClick={goNext} ref={this.nextRef}>
                 Next
               </button>
             ) : (
-              <button type="button" onClick={onSkipClick} ref={this.nextRef}>
+              <button type="button" onClick={skip} ref={this.nextRef}>
                 Done
               </button>
             )

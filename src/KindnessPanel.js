@@ -227,10 +227,10 @@ export default class KindnessPanel
       message,
       totalSize: this.series.size,
       currentIndex: this.spotIndex,
-      onGoPrevClick: this.series.hasKindnessByIndex(spotIndex - 1) ? this.goPrev : null,
-      onGoNextClick: this.series.hasKindnessByIndex(spotIndex + 1) ? this.goNext : null,
-      onGoIndexClick: this.goIndex,
-      onSkipClick: this.skip,
+      goPrev: this.series.hasKindnessByIndex(spotIndex - 1) ? this.goPrev : null,
+      goNext: this.series.hasKindnessByIndex(spotIndex + 1) ? this.goNext : null,
+      goIndex: this.goIndex,
+      skip: this.skip,
     };
 
     return (

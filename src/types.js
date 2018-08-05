@@ -3,8 +3,8 @@ export type KindnessPanelContentProps = {|
   message: mixed,
   totalSize: number,
   currentIndex: number,
-  onGoPrevClick: Function,
-  onGoNextClick: Function,
-  onSkipClick: Function,
-  onGoIndexClick: Function,
+  goPrev: ?Function,
+  goNext: ?Function,
+  skip: Function,
+  goIndex: Function,
 |};

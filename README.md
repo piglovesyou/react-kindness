@@ -37,9 +37,9 @@ then point out some elements that you want your guests to focus on
 </Kindness>
 ```
 
-When the `<KindnessPanel>`'s `enabled` becomes `true`, the tutorial starts.
+When the `<KindnessPanel />`'s `enabled` becomes `true`, the tutorial starts.
 
-## Props of `<KindnessPanel>`
+## Props of `<KindnessPanel />`
 
 ```js
 type KindnessPanelProps = {|
@@ -54,7 +54,7 @@ type KindnessPanelProps = {|
 ```
 
 
-## Props of `<Kindness>`
+## Props of `<Kindness />`
 
 ```js
 export type KindnessProps = {|
@@ -68,14 +68,14 @@ export type KindnessProps = {|
 
 ## Customizing a panel content
 
-By default `<KindnessPanel />` uses `<KindnessPanelContent/>` internally. By passing a function as a child, you can customize the content.
+By default `<KindnessPanel />` uses `<KindnessPanelContent />` internally. By passing a function as a child, you can customize the content.
 
 ```js
 <KindnessPanel enabled={true}>
     {
-        ({total, currentIndex, goNext, goPrevious, goIndex, finish}) => (
+        ({totalSize, currentIndex, goPrev, goNext}) => (
             <div>
-                <h3>This is {stage} item</h3>
+                <h3>{`This is ${currentIndex + 1} of ${totalSize} item.`}</h3>
                 <button onClick={goPrev}>Go previous</button>
                 <button onClick={goNext}>Go next</button>
             </div>
@@ -92,10 +92,10 @@ type KindnessPanelContentProps = {|
   message: mixed,
   totalSize: number,
   currentIndex: number,
-  onGoPrevClick: Function,
-  onGoNextClick: Function,
-  onSkipClick: Function,
-  onGoIndexClick: Function,
+  goPrev: ?Function,
+  goNext: ?Function,
+  skip: Function,
+  goIndex: Function,
 |};
 ```
 
