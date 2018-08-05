@@ -80,28 +80,14 @@ export default class KindnessPanel
     }
   }
 
-  componentDidUpdate(prevProps: KindnessPanelProps, prevState: KindnessPanelState) {
+  componentDidUpdate(prevProps: KindnessPanelProps) {
     const { enabled } = this.props;
-    const { spotOffset } = this.state;
     const { spotIndex } = this;
 
     if (!prevProps.enabled && enabled) {
       this.updateSpot(spotIndex);
     } else if (prevProps.enabled && !enabled && this.popper) {
       this.disposeListeners();
-    }
-
-    if (this.spotIndex >= 0
-      && this.svg.current
-      && this.spot.current
-      && prevState.spotOffset && spotOffset) {
-      if (prevState.spotOffset.top !== spotOffset.top) {
-        scrollViewport('y', spotOffset);
-      }
-
-      if (prevState.spotOffset.left !== spotOffset.left) {
-        scrollViewport('x', spotOffset);
-      }
     }
   }
 
@@ -145,10 +131,19 @@ export default class KindnessPanel
   updateSpot(newIndex) {
     this.spotIndex = newIndex;
     this.reattachListeners(newIndex);
+    const spotOffset = this.createSpotOffset(newIndex);
     this.setState({
-      spotOffset: this.createSpotOffset(newIndex),
+      spotOffset,
       overlayStyle: createOverlayStyle(),
     });
+
+    if (newIndex >= 0
+      && this.svg.current
+      && this.spot.current
+      && spotOffset) {
+      scrollViewport('y', spotOffset);
+      scrollViewport('x', spotOffset);
+    }
   }
 
   forceUpdateOverlaySVG() {
