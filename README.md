@@ -101,7 +101,7 @@ When you pass a function to `<Kindness />` as a child, you can use additional va
 - [x] Why my popper doesn't flip on viewport boundary
 - [x] 0.3.0 Fancy API for customising
 - [x] 0.4.0 More tests
-- [ ] Accept a function as a child to <Kindness />
+- [ ] Accept a function as a child to `<Kindness />`
 
 ## License
 
