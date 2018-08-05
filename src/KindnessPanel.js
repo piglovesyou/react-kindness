@@ -19,13 +19,6 @@ const OVERLAY_TRANSITION_DELAY = 400;
 const SPOT_MARGIN = 8;
 const SPOT_MAX_RADIUS = 56;
 
-type SvgRect = {
-  x?: number,
-  y?: number,
-  width?: number | string,
-  height?: number | string,
-}
-
 export type KindnessPanelProps = {|
   enabled: boolean,
   onExit: Function,
@@ -44,7 +37,7 @@ export default class KindnessPanel
   constructor(props: KindnessPanelProps) {
     super(props);
     this.state = {
-      spotStyle: {},
+      spotOffset: null,
       overlayStyle: {},
     };
 
@@ -54,7 +47,7 @@ export default class KindnessPanel
     this.popper = null;
     this.panel = React.createRef();
     this.spot = React.createRef();
-    this.canvas = React.createRef();
+    this.svg = React.createRef();
 
     this.onWindowResize = debounce(this.updateOverlayStyle, 10);
   }
@@ -77,7 +70,7 @@ export default class KindnessPanel
 
   componentDidUpdate(prevProps: KindnessPanelProps, prevState: KindnessPanelState) {
     const { enabled } = this.props;
-    const { spotStyle } = this.state;
+    const { spotOffset } = this.state;
     const { spotIndex } = this;
 
     if (!prevProps.enabled && enabled) {
@@ -87,17 +80,15 @@ export default class KindnessPanel
     }
 
     if (this.spotIndex >= 0
-      && this.canvas.current
+      && this.svg.current
       && this.spot.current
-      && prevState.spotStyle && spotStyle
-      && (getSpotTop(prevState.spotStyle) !== getSpotTop(spotStyle))) {
-      const scrollTop = getScroll(global.document.documentElement);
-      const { clientHeight } = global.document.documentElement;
+      && prevState.spotOffset && spotOffset) {
+      if (prevState.spotOffset.top !== spotOffset.top) {
+        scrollViewport('y', spotOffset);
+      }
 
-      if (scrollTop + clientHeight < getSpotTop(spotStyle)) {
-        animateScrollTo(getScrollYOfSpotBottom(spotStyle));
-      } else if (scrollTop > getSpotBottom(spotStyle)) {
-        animateScrollTo(getSpotTop(spotStyle));
+      if (prevState.spotOffset.left !== spotOffset.left) {
+        scrollViewport('x', spotOffset);
       }
     }
   }
@@ -115,7 +106,7 @@ export default class KindnessPanel
 
   updateOverlayStyle = () => {
     this.setState({
-      spotStyle: this.createSpotStyle(this.spotIndex),
+      spotOffset: this.createSpotOffset(this.spotIndex),
       overlayStyle: createOverlayStyle(),
     });
     this.forceUpdateOverlaySVG();
@@ -142,21 +133,20 @@ export default class KindnessPanel
   updateSpot(newIndex) {
     this.spotIndex = newIndex;
     this.reattachListeners(newIndex);
-    const spotStyle = this.createSpotStyle(newIndex);
     this.setState({
-      spotStyle,
+      spotOffset: this.createSpotOffset(newIndex),
       overlayStyle: createOverlayStyle(),
     });
   }
 
   forceUpdateOverlaySVG() {
     // At least Chrome often fails drawing overlay rect after window resize
-    if (!this.canvas.current) return;
-    const old = this.canvas.current.getAttribute('width');
-    this.canvas.current.setAttribute('width', '200%');
+    if (!this.svg.current) return;
+    const old = this.svg.current.getAttribute('width');
+    this.svg.current.setAttribute('width', '200%');
     setTimeout(() => {
-      if (!this.canvas.current) return;
-      this.canvas.current.setAttribute('width', old);
+      if (!this.svg.current) return;
+      this.svg.current.setAttribute('width', old);
     });
   }
 
@@ -194,13 +184,10 @@ export default class KindnessPanel
     }
   }
 
-  createSpotStyle(spotIndex: number): ?SvgRect {
+  createSpotOffset(spotIndex: number): ?popper$Offset {
     if (this.panel.current && this.spot.current && this.series.hasKindnessByIndex(spotIndex)) {
       const targetEl = this.series.getKindnessElementByIndex(spotIndex);
-      const offset = getReferenceOffsets(null, this.spot.current, targetEl);
-      const { spotType } = this.props;
-
-      return spotType === 'rect' ? createRectSvgStyle(offset) : createCircleSvgStyle(offset);
+      return getReferenceOffsets(null, this.spot.current, targetEl);
     }
     return null;
   }
@@ -208,10 +195,17 @@ export default class KindnessPanel
   render() {
     if (!global.document) return null;
     const { enabled, spotType, children } = this.props;
-    const { spotStyle, overlayStyle } = this.state;
+    const { spotOffset, overlayStyle } = this.state;
     const k = this.series.getKindnessByIndex(this.spotIndex);
     const { title, message } = k ? k.props : {};
     const { spotIndex } = this;
+
+    let spotStyle = null;
+    if (spotOffset) {
+      spotStyle = spotType === 'rect'
+        ? createRectSvgStyle(spotOffset)
+        : createCircleSvgStyle(spotOffset);
+    }
 
     const wasMounted = Boolean(this.spot.current);
     const panelContentProps: KindnessPanelContentProps = {
@@ -224,6 +218,7 @@ export default class KindnessPanel
       onGoIndexClick: this.goIndex,
       onSkipClick: this.skip,
     };
+
     return (
       ReactDOM.createPortal(
         <CSSTransition
@@ -236,7 +231,7 @@ export default class KindnessPanel
             <React.Fragment>
               <div className={classnames(rootClassName)}>
                 <svg
-                  ref={this.canvas}
+                  ref={this.svg}
                   className={overlayRootClassName}
                   style={overlayStyle}
                   width="100%"
@@ -253,7 +248,7 @@ export default class KindnessPanel
                         ref: this.spot,
                         fill: 'black',
                         filter: 'url(#blurMe)',
-                        ...spotStyle,
+                        ...(spotStyle),
                       })}
                     </g>
                   </mask>
@@ -277,7 +272,6 @@ export default class KindnessPanel
                   : null
                 }
               </div>
-              {/* /!* TODO: how can i contain panel inside of react-kindness root *!/ */}
             </React.Fragment>
           )}
         </CSSTransition>,
@@ -294,44 +288,22 @@ KindnessPanel.defaultProps = {
   children: panelContentProps => <KindnessPanelContent {...panelContentProps} />,
 };
 
-function getScrollYOfSpotBottom(spotStyle) {
-  if (isNumber(spotStyle.cy)) {
-    return spotStyle.cy + spotStyle.r - global.document.documentElement.clientHeight;
-  } if (isNumber(spotStyle.y)) {
-    return spotStyle.y;
+function scrollViewport(axis, spotOffset) {
+  const offsetProp = axis === 'x' ? 'left' : 'top';
+  const sizeProp = axis === 'x' ? 'width' : 'height';
+  const horizontal = axis === 'x';
+  const scrollSize = getScroll(global.document.documentElement, offsetProp);
+  const viewportSize = axis === 'x'
+    ? global.document.documentElement.clientWidth
+    : global.document.documentElement.clientHeight;
+  const offsetSize = spotOffset[offsetProp];
+  const spotEdge = offsetSize + spotOffset[sizeProp];
+
+  if (scrollSize + viewportSize < offsetSize) {
+    animateScrollTo(spotEdge - viewportSize, { horizontal, offset: SPOT_MARGIN });
+  } else if (scrollSize > spotEdge) {
+    animateScrollTo(offsetSize, { horizontal, offset: SPOT_MARGIN });
   }
-  return -1;
-}
-
-function getSpotTop(spotStyle) {
-  if (isNumber(spotStyle.cy)) {
-    return spotStyle.cy - spotStyle.r;
-  } if (isNumber(spotStyle.y)) {
-    return spotStyle.y;
-  }
-  return -1;
-}
-
-function getSpotBottom(spotStyle) {
-  if (isNumber(spotStyle.cy)) {
-    return spotStyle.cy + spotStyle.r;
-  } if (isNumber(spotStyle.y)) {
-    return spotStyle.y + spotStyle.height;
-  }
-  return -1;
-}
-
-// function getSpotY(spotStyle) {
-//   if (isNumber(spotStyle.cx)) {
-//     return spotStyle.cx
-//   } else if (isNumber(spotStyle.x)) {
-//     return spotStyle.x;
-//   }
-//   throw new Error('a?');
-// }
-
-function isNumber(v) {
-  return typeof v === 'number';
 }
 
 function createCircleSvgStyle(popperOffset: popper$Offset) {
@@ -339,8 +311,8 @@ function createCircleSvgStyle(popperOffset: popper$Offset) {
   const hc = (popperOffset.height / 2);
   const rad = wc + (SPOT_MARGIN * 2);
   return {
-    cx: popperOffset.left + wc, // - SPOT_MARGIN - global.scrollX,
-    cy: popperOffset.top + hc, // - SPOT_MARGIN - global.scrollY,
+    cx: popperOffset.left + wc,
+    cy: popperOffset.top + hc,
     r: Math.min(rad, SPOT_MAX_RADIUS),
   };
 }
@@ -356,8 +328,9 @@ function createRectSvgStyle(popperOffset: popper$Offset) {
 
 function createOverlayStyle() {
   const d = document.documentElement;
+  const b = document.body;
   return {
-    width: Math.max(d.clientWidth, d.offsetWidth),
-    height: Math.max(d.clientHeight, d.offsetHeight),
+    width: Math.max(d.clientWidth, d.offsetWidth, b.scrollWidth),
+    height: Math.max(d.clientHeight, d.offsetHeight, b.scrollHeight),
   };
 }

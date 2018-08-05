@@ -8,7 +8,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showKindness: false,
+      showKindness: true,
     };
   }
 
@@ -37,8 +37,7 @@ react-kindness DEMO
             </h1>
           </Kindness>
           <h2 className="project-tagline">
-A lightweight, fully-customizable kindly screen guide for projects using
-            React
+A lightweight, fully-customizable kind screen guide for React
           </h2>
 
           <Kindness
