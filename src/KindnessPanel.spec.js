@@ -1,40 +1,171 @@
-import puppeteer from 'puppeteer';
-import assert, { deepStrictEqual } from 'assert';
-import { launchApp } from './testUtils';
-// import log from 'why-is-node-running';
+import React from 'react';
+import {render} from 'react-dom';
+import assert, {deepStrictEqual} from 'assert';
+import {Kindness, KindnessPanel} from './index';
+import './index.css';
+import Enzyme, {mount} from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({adapter: new Adapter()});
 
 describe('<KindnessPanel />', function describe() {
-  const timeout = 1000 * 60;
-  this.timeout(timeout);
-  let server;
-  let browser;
-  let page;
+  this.timeout(30 * 1000);
+  let appContainer;
+  let mountOpts;
+  let app;
+  let showKindness = false;
 
   before(async () => {
-    server = await launchApp();
-    browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-    page = await browser.newPage();
-    await page.goto('http://localhost:3000', { timeout });
+    appContainer = document.createElement('div');
+    appContainer.id = 'root';
+    document.body.appendChild(appContainer);
+    mountOpts = {attachTo: appContainer};
+  });
+
+  afterEach(async () => {
   });
 
   after(async () => {
-    await browser.close();
-    await new Promise(resolve => server.close(resolve));
-    // log(); // TODO: care all processes
+    app.unmount();
+    document.body.removeChild(appContainer);
   });
 
-  it('positions a spot in a viewport', async () => {
-    const {
-      type, cx, cy, r,
-    } = await page.$eval('.react-kindness__spot', el => ({
-      type: el.nodeName,
-      cx: Math.floor(Number(el.getAttribute('cx'))),
-      cy: Math.floor(Number(el.getAttribute('cy'))),
-      r: Math.floor(Number(el.getAttribute('r'))),
-    }));
-    deepStrictEqual(type, 'circle');
-    assert(cx > 350 && cx < 450);
-    assert(cy > 50 && cy < 150);
-    deepStrictEqual(r, 56);
+  it('shows nothing when no <Kindness />', async () => {
+    app = mount(<div>
+      <KindnessPanel enabled={false} onExit={() => {}}/>
+    </div>, mountOpts);
+    assert(document.querySelector('.react-kindness'));
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__overlay')).opacity, '0');
+
+    app.setProps({enabled: String(true)});
+    await timeout(500); // Wait for transition
+    assert(document.querySelector('.react-kindness'));
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__overlay')).opacity, '0');
+  });
+
+  it('shows and hide a panel when <Kindness /> exists', async () => {
+    class App extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          showKindness: false,
+        };
+      }
+      render() {
+        const {showKindness} = this.state;
+        return (
+          <React.Fragment>
+            <KindnessPanel enabled={showKindness} onExit={() => {this.setState({showKindness: false})}}/>
+            <Kindness><span>yeah</span></Kindness>
+          </React.Fragment>
+        )
+      }
+    }
+    app = mount(<App />, mountOpts);
+
+    app.setState({showKindness: true});
+    await timeout(500); // Wait for transition
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__overlay')).opacity, '1');
+
+    const nextEl = app.find('.react-kindness-panel__bottombar button').last();
+    nextEl.simulate('click');
+    await timeout(500); // Wait for transition
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__overlay')).opacity, '0');
+  });
+
+  it('can initially shows on componentDidMount', async () => {
+    app = mount(<div>
+      <KindnessPanel enabled={true} onExit={() => {}}/>
+      <p><Kindness><span>yeah</span></Kindness></p>
+    </div>, mountOpts);
+    assert(document.querySelector('.react-kindness'));
+    await timeout(500); // Wait for transition
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__overlay')).opacity, '1');
+  });
+
+  it('follows order of <Kindness /> on click "next"', async () => {
+    class App extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          showKindness: false,
+        };
+      }
+      render() {
+        const {showKindness} = this.state;
+        return (
+          <React.Fragment>
+            <KindnessPanel enabled={showKindness} onExit={() => {this.setState({showKindness: false})}}/>
+            <p><Kindness message={'zero'}><span>zero</span></Kindness></p>
+            <p><Kindness message={'two'} order={200}><span>two</span></Kindness></p>
+            <p><Kindness message={'one'} order={100}><span>one</span></Kindness></p>
+            <p><Kindness message={'three'}><span>three</span></Kindness></p>
+            <p><Kindness message={'four'} order={400}><span>four</span></Kindness></p>
+            <p><Kindness message={'five'}><span>five</span></Kindness></p>
+          </React.Fragment>
+        )
+      }
+    }
+    app = mount(<App />, mountOpts);
+
+    app.setState({showKindness: true});
+    await timeout(500); // Wait for transition
+    const nextEl = app.find('.react-kindness-panel__bottombar button').last();
+    deepStrictEqual(app.find('.react-kindness-panel__message').text(), 'zero');
+
+    nextEl.simulate('click');
+    await timeout(500); // Wait for transition
+    deepStrictEqual(app.find('.react-kindness-panel__message').text(), 'one');
+
+    nextEl.simulate('click');
+    await timeout(500); // Wait for transition
+    deepStrictEqual(app.find('.react-kindness-panel__message').text(), 'two');
+
+    nextEl.simulate('click');
+    await timeout(500); // Wait for transition
+    deepStrictEqual(app.find('.react-kindness-panel__message').text(), 'three');
+
+    nextEl.simulate('click');
+    await timeout(500); // Wait for transition
+    deepStrictEqual(app.find('.react-kindness-panel__message').text(), 'four');
+
+    nextEl.simulate('click');
+    await timeout(500); // Wait for transition
+    deepStrictEqual(app.find('.react-kindness-panel__message').text(), 'five');
+
+    nextEl.simulate('click');
+    await timeout(500); // Wait for transition
+    deepStrictEqual(app.find('.react-kindness-panel__message').length, 0);
+
+  });
+
+  it('scrolls to the target', async () => {
+    app = mount(<div>
+      <KindnessPanel enabled={true} onExit={() => {}}/>
+      <header style={{border: '1px #fcc dashed', height: 2000}}>
+        <p><Kindness order={900}><span>yeah</span></Kindness></p>
+        <p><Kindness order={0}><span>yeah</span></Kindness></p>
+      </header>
+      <main>
+        <p><Kindness order={100}><span>yeah</span></Kindness></p>
+      </main>
+    </div>, mountOpts);
+    assert(document.querySelector('.react-kindness'));
+    await timeout(500); // Wait for transition
+    deepStrictEqual(window.scrollY, 0);
+    const nextEl = app.find('.react-kindness-panel__bottombar button').last();
+
+    nextEl.simulate('click');
+    await timeout(1000); // Wait for transition
+    const lastScrollY = window.scrollY;
+    assert(lastScrollY > 0);
+
+    nextEl.simulate('click');
+    await timeout(1000); // Wait for transition
+    assert(window.scrollY < lastScrollY);
   });
 });
+
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

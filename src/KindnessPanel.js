@@ -356,8 +356,9 @@ function createRectSvgStyle(popperOffset: popper$Offset) {
 }
 
 function createOverlayStyle() {
+  const d = document.documentElement;
   return {
-    width: document.documentElement.offsetWidth,
-    height: document.documentElement.offsetHeight,
+    width: Math.max(d.clientWidth, d.offsetWidth),
+    height: Math.max(d.clientHeight, d.offsetHeight),
   };
 }
