@@ -1,10 +1,14 @@
+// @flow
+
 import React from 'react';
 import type { SeriesId } from './series';
 import { Series, seriesPool } from './series';
 
 export type KindnessProps = {|
   children: mixed,
+  // eslint-disable-next-line react/no-unused-prop-types
   title?: mixed,
+  // eslint-disable-next-line react/no-unused-prop-types
   message?: mixed,
   order?: number | 'auto',
   seriesId?: SeriesId,
@@ -51,4 +55,6 @@ export default class Kindness extends React.Component<KindnessProps> {
 Kindness.defaultProps = {
   order: 'auto',
   seriesId: 'default',
+  title: null,
+  message: null,
 };

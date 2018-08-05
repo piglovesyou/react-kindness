@@ -70,14 +70,13 @@ export default class KindnessPanel
       setTimeout(() => {
         this.updateSpot(initialIndex);
       }, 0);
-
     } else {
       this.spotIndex = initialIndex;
     }
   }
 
   componentDidUpdate(prevProps: KindnessPanelProps, prevState: KindnessPanelState) {
-    const { enabled, initialIndex } = this.props;
+    const { enabled } = this.props;
     const { spotStyle } = this.state;
     const { spotIndex } = this;
 
