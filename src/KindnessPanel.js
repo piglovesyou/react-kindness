@@ -10,7 +10,7 @@ import animateScrollTo from 'animated-scroll-to';
 import type { SeriesId } from './series';
 import { seriesPool } from './series';
 import {
-  classnames, overlayRootClassName, panelClassName, rootClassName, spotClassName,
+  classnames, svgClassName, overlayClassName, panelClassName, rootClassName, spotClassName,
 } from './classNames';
 import KindnessPanelContent from './KindnessPanelContent';
 import { KindnessPanelContentProps } from './types';
@@ -241,32 +241,29 @@ export default class KindnessPanel
               <div className={classnames(rootClassName)}>
                 <svg
                   ref={this.svg}
-                  className={overlayRootClassName}
+                  className={svgClassName}
                   style={overlayStyle}
                   width="100%"
                   height="100%"
                 >
-                  <filter id="blurMe">
+                  <filter id="blurFilter">
                     <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
                   </filter>
-                  <mask id="mask0">
+                  <mask id="spot">
                     <g fill="black">
                       <rect x="0" y="0" width="100%" height="100%" fill="white" />
                       {React.createElement(spotType, {
                         className: spotClassName,
                         ref: this.spot,
                         fill: 'black',
-                        filter: 'url(#blurMe)',
+                        filter: 'url(#blurFilter)',
                         ...(spotStyle),
                       })}
                     </g>
                   </mask>
                   <rect
-                    width="100%"
-                    height="100%"
-                    fill="black"
-                    opacity=".15"
-                    mask="url(#mask0)"
+                    className={overlayClassName}
+                    mask="url(#spot)"
                   />
                 </svg>
                 {enabled
@@ -329,16 +326,16 @@ function createCircleSvgStyle(popperOffset: popper$Offset) {
 
 function createRectSvgStyle(popperOffset: popper$Offset) {
   return {
-    x: popperOffset.left - SPOT_MARGIN - global.scrollX,
-    y: popperOffset.top - SPOT_MARGIN - global.scrollY,
+    x: popperOffset.left - SPOT_MARGIN,
+    y: popperOffset.top - SPOT_MARGIN,
     width: popperOffset.width + (SPOT_MARGIN * 2),
     height: popperOffset.height + (SPOT_MARGIN * 2),
   };
 }
 
 function createOverlayStyle() {
-  const d = document.documentElement;
-  const b = document.body;
+  const d = global.document.documentElement;
+  const b = global.document.body;
   return {
     width: Math.max(d.clientWidth, d.offsetWidth, b.scrollWidth),
     height: Math.max(d.clientHeight, d.offsetHeight, b.scrollHeight),

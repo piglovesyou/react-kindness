@@ -7,12 +7,12 @@
 /*******************************************************************************
  * Commons
  */
-.react-kindness__overlay,
+.react-kindness__svg,
 .react-kindness-panel {
   z-index: 1000;
 }
 
-.react-kindness__overlay {
+.react-kindness__svg {
   position: absolute;
   top: 0;
   right: 0;
@@ -20,34 +20,41 @@
   left: 0;
 }
 
-/*******************************************************************************
- * Overlay
- */
 .react-kindness__overlay {
+  width: 100%;
+  height: 100%;
+  fill: black;
+  opacity: .2;
+}
+
+/*******************************************************************************
+ * SVG
+ */
+.react-kindness__svg {
   opacity: 0;
   pointer-events: none;
   transition: opacity linear var(--transition-delay);
 }
 
-.react-kindness--exit-done .react-kindness__overlay {
+.react-kindness--exit-done .react-kindness__svg {
   display: none;
 }
 
-.react-kindness--enter .react-kindness__overlay {
+.react-kindness--enter .react-kindness__svg {
   opacity: 0;
 }
 
-.react-kindness--enter-active .react-kindness__overlay,
-.react-kindness--enter-done .react-kindness__overlay {
+.react-kindness--enter-active .react-kindness__svg,
+.react-kindness--enter-done .react-kindness__svg {
   opacity: 1 !important;
 }
 
-.react-kindness--exit .react-kindness__overlay {
+.react-kindness--exit .react-kindness__svg {
   opacity: 0
 }
 
-.react-kindness--exit-active .react-kindness__overlay,
-.react-kindness--exit-done .react-kindness__overlay {
+.react-kindness--exit-active .react-kindness__svg,
+.react-kindness--exit-done .react-kindness__svg {
   opacity: 0;
 }
 
@@ -63,7 +70,9 @@
   transition: x var(--transition-delay),
   y var(--transition-delay),
   cx var(--transition-delay),
-  cy var(--transition-delay);
+  cy var(--transition-delay),
+  width var(--transition-delay),
+  height var(--transition-delay);
 }
 
 /*******************************************************************************

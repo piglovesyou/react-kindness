@@ -38,12 +38,12 @@ describe('<KindnessPanel />', function describe() {
       </div>
     ), mountOpts);
     assert(document.querySelector('.react-kindness'));
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__overlay')).opacity, '0');
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '0');
 
     app.setProps({ enabled: String(true) });
     await timeout(500); // Wait for transition
     assert(document.querySelector('.react-kindness'));
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__overlay')).opacity, '0');
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '0');
   });
 
   it('shows and hide a panel when <Kindness /> exists', async () => {
@@ -76,12 +76,12 @@ yeah
 
     app.setState({ showKindness: true });
     await timeout(500); // Wait for transition
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__overlay')).opacity, '1');
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '1');
 
     const nextEl = app.find('.react-kindness-panel__bottombar button').last();
     nextEl.simulate('click');
     await timeout(500); // Wait for transition
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__overlay')).opacity, '0');
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '0');
   });
 
   it('can initially shows on componentDidMount', async () => {
@@ -99,7 +99,7 @@ yeah
     ), mountOpts);
     assert(document.querySelector('.react-kindness'));
     await timeout(500); // Wait for transition
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__overlay')).opacity, '1');
+    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '1');
   });
 
   it('follows order of <Kindness /> on click "next"', async () => {

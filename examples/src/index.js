@@ -23,19 +23,24 @@ Skip to the content.
 
         <KindnessPanel
           enabled={showKindness}
+          spotType="rect"
           onExit={() => this.setState({ showKindness: false })}
         />
 
         <header className="page-header" role="banner">
-          <Kindness
-            order={0}
-            title="Hi!"
-            message="react-kindness helps guests to give eyes on specific UI parts in a screen."
-          >
-            <h1 className="project-name">
-react-kindness DEMO
-            </h1>
-          </Kindness>
+          <h1 className="project-name">
+            <Kindness
+              order={0}
+              title="Hi!"
+              message="react-kindness helps guests to give eyes on specific UI parts in a screen."
+            >
+              <span>
+react-kindness
+              </span>
+            </Kindness>
+            {' '}
+DEMO
+          </h1>
           <h2 className="project-tagline">
 A lightweight, fully-customizable kind screen guide for React
           </h2>

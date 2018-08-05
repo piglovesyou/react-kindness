@@ -1,5 +1,6 @@
 export const rootClassName = 'react-kindness';
-export const overlayRootClassName = `${rootClassName}__overlay`;
+export const svgClassName = `${rootClassName}__svg`;
+export const overlayClassName = `${rootClassName}__overlay`;
 export const spotClassName = `${rootClassName}__spot`;
 export const panelClassName = `${rootClassName}-panel`;
 export const panelArrowClassName = `${rootClassName}-panel__arrow`;
