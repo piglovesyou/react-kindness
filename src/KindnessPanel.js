@@ -26,6 +26,7 @@ export type KindnessPanelProps = {|
   initialIndex?: number,
   children?: (KindnessPanelContentProps) => React.Component,
   seriesId?: SeriesId,
+  onClickOutside?: () => void,
 |};
 
 export type KindnessPanelState = {|
@@ -36,14 +37,25 @@ export default class KindnessPanel
   extends React.Component<KindnessPanelProps, KindnessPanelState> {
   constructor(props: KindnessPanelProps) {
     super(props);
+
     this.state = {
       spotOffset: null,
       overlayStyle: {},
     };
 
+    this.onClickOutside = (e) => {
+      const { enabled } = this.props;
+      if (!enabled) return;
+      if (!this.panel.current) return;
+      if (!this.series.hasKindnessByIndex(this.spotIndex)) return;
+      const kEl = this.series.getKindnessElementByIndex(this.spotIndex);
+      if (this.panel.current.contains(e.target) || kEl.contains(e.target)) return;
+      props.onClickOutside(e);
+    };
+
     this.spotIndex = -1;
     this.series = seriesPool.getOrCreate(props.seriesId);
-    this.isResizeObserved = false;
+    this.isViewportEventObserved = false;
     this.popper = null;
     this.panel = React.createRef();
     this.spot = React.createRef();
@@ -167,9 +179,10 @@ export default class KindnessPanel
       this.popper = new Popper(targetEl, this.panel.current);
     }
 
-    if (!this.isResizeObserved) {
+    if (!this.isViewportEventObserved) {
       global.addEventListener('resize', this.onWindowResize);
-      this.isResizeObserved = true;
+      global.document.addEventListener('mousedown', this.onClickOutside, true);
+      this.isViewportEventObserved = true;
     }
   }
 
@@ -178,9 +191,10 @@ export default class KindnessPanel
       this.popper.destroy();
       this.popper = null;
     }
-    if (this.isResizeObserved) {
+    if (this.isViewportEventObserved) {
       global.removeEventListener('resize', this.onWindowResize);
-      this.isResizeObserved = false;
+      global.document.removeEventListener('mousedown', this.onClickOutside, true);
+      this.isViewportEventObserved = false;
     }
   }
 
@@ -286,6 +300,7 @@ KindnessPanel.defaultProps = {
   spotType: 'circle',
   seriesId: 'default',
   children: panelContentProps => <KindnessPanelContent {...panelContentProps} />,
+  onClickOutside: () => {},
 };
 
 function scrollViewport(axis, spotOffset) {

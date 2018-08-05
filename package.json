@@ -92,7 +92,7 @@
     "transpile": "babel src -d dist --copy-files",
     "build": "webpack --mode production",
     "gh-pages": "gh-pages -d examples/dist",
-    "prepublishOnly": "npm run transpile",
+    "prepublishOnly": "npm run lint && npm test && npm run transpile",
     "publish-demo": "npm run build && npm run gh-pages",
     "start": "webpack-dev-server --mode development",
     "test": "CI=true karma start"

@@ -49,6 +49,7 @@ type KindnessPanelProps = {|
   initialIndex?: number,        // 0 by default
   children?: mixed,
   seriesId?: SeriesId,          // 'default' by default
+  onClickOutside?: () => void,  // () => {} by default
 |};
 ```
 
@@ -83,6 +84,21 @@ By default `<KindnessPanel />` uses `<KindnessPanelContent/>` internally. By pas
 </KindnessPanel>
 ```
 
+Properties of the argument is this:
+
+```js
+type KindnessPanelContentProps = {|
+  title: mixed,
+  message: mixed,
+  totalSize: number,
+  currentIndex: number,
+  onGoPrevClick: Function,
+  onGoNextClick: Function,
+  onSkipClick: Function,
+  onGoIndexClick: Function,
+|};
+```
+
 ## (wip) Get additional variables from `<Kindness />`
 
 When you pass a function to `<Kindness />` as a child, you can use additional variables.
@@ -102,6 +118,7 @@ When you pass a function to `<Kindness />` as a child, you can use additional va
 - [x] 0.3.0 Fancy API for customising
 - [x] 0.4.0 More tests
 - [x] Scroll X
+- [x] `onClickOutside` of `<KindnessPanel />`
 - [ ] Accept a function as a child to `<Kindness />`
 
 ## License
