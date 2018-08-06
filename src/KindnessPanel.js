@@ -26,7 +26,7 @@ export type KindnessPanelProps = {|
   initialIndex?: number,
   children?: (KindnessPanelContentProps) => React.Component,
   seriesId?: SeriesId,
-  onClickOutside?: () => void,
+  onClickOutside?: () => ?boolean,
 |};
 
 export type KindnessPanelState = {|
@@ -50,7 +50,23 @@ export default class KindnessPanel
       if (!this.series.hasKindnessByIndex(this.spotIndex)) return;
       const kEl = this.series.getKindnessElementByIndex(this.spotIndex);
       if (this.panel.current.contains(e.target) || kEl.contains(e.target)) return;
-      props.onClickOutside(e);
+      const rv = props.onClickOutside(e);
+
+      if (rv === false) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        if (!this.svg.current) return;
+        // Block the user interaction
+        const handler = () => {
+          setTimeout(() => {
+            this.svg.current.style.pointerEvents = '';
+            document.removeEventListener('mouseup', handler);
+          });
+        };
+        document.addEventListener('mouseup', handler);
+        this.svg.current.style.pointerEvents = 'auto';
+      }
     };
 
     this.spotIndex = -1;

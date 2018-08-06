@@ -49,7 +49,9 @@ type KindnessPanelProps = {|
   initialIndex?: number,        // 0 by default
   children?: mixed,
   seriesId?: SeriesId,          // 'default' by default
-  onClickOutside?: () => void,  // () => {} by default
+  onClickOutside?: () => ?boolean,  // () => {} by default.
+                                    // If false was returned, react-kindness
+                                    // tries to disable user interactions. 
 |};
 ```
 

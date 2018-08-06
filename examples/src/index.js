@@ -24,6 +24,7 @@ Skip to the content.
         <KindnessPanel
           enabled={showKindness}
           onExit={() => this.setState({ showKindness: false })}
+          // onClickOutside={() => false}
         />
 
         <header className="page-header" role="banner">
