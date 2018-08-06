@@ -7,6 +7,7 @@ import { getReferenceOffsets, getScroll } from 'popper.js/dist/umd/popper-utils'
 import type { popper$Offset } from 'popper.js/dist/popper-utils';
 import debounce from 'lodash.debounce';
 import animateScrollTo from 'animated-scroll-to';
+import EventEmitter from 'events';
 import type { SeriesId } from './series';
 import { seriesPool } from './series';
 import {
@@ -76,6 +77,7 @@ export default class KindnessPanel
     this.panel = React.createRef();
     this.spot = React.createRef();
     this.svg = React.createRef();
+    this.transitionEmitter = new EventEmitter();
 
     this.onWindowResize = debounce(this.updateOverlayStyle, 10);
   }
@@ -240,6 +242,7 @@ export default class KindnessPanel
       goNext: this.series.hasKindnessByIndex(spotIndex + 1) ? this.goNext : null,
       goIndex: this.goIndex,
       skip: this.skip,
+      transitionEmitter: this.transitionEmitter,
     };
 
     return (
@@ -248,6 +251,7 @@ export default class KindnessPanel
           in={wasMounted && enabled}
           timeout={OVERLAY_TRANSITION_DELAY}
           classNames={`${rootClassName}-`}
+          onEntered={() => this.transitionEmitter.emit('onEntered')}
           onExited={this.onOverlayDisapeared}
         >
           {() => (

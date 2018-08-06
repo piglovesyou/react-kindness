@@ -12,15 +12,19 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
   constructor(props) {
     super(props);
     this.nextRef = React.createRef();
+
+    const { transitionEmitter } = props;
+    transitionEmitter.on('onEntered', this.onEntered);
   }
 
-  componentDidMount() {
-    // TODO: Better way?
-    // Wait for the panel positioning
-    setTimeout(() => {
-      const { current } = this.nextRef;
-      if (current) current.focus();
-    }, 200);
+  componentWillUnmount() {
+    const { transitionEmitter } = this.props;
+    transitionEmitter.removeListener('onEntered', this.onEntered);
+  }
+
+  onEntered = () => {
+    if (!this.nextRef.current) return;
+    this.nextRef.current.focus();
   }
 
   render() {

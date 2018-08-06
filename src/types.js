@@ -1,3 +1,5 @@
+import type EventEmitter from 'events';
+
 export type KindnessPanelContentProps = {|
   title: mixed,
   message: mixed,
@@ -7,4 +9,5 @@ export type KindnessPanelContentProps = {|
   goNext: ?Function,
   skip: Function,
   goIndex: Function,
+  transitionEmitter: EventEmitter,
 |};
