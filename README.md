@@ -4,7 +4,7 @@ A lightweight, fully-customizable kind screen guide for React
 
 ![mini demo](./resources/demo.gif)
 
-[Demo](https://piglovesyou.github.io/react-kindness/)
+👉 [Demo](https://piglovesyou.github.io/react-kindness/)
 
 To install
 
@@ -86,7 +86,7 @@ By default `<KindnessPanel />` uses `<KindnessPanelContent />` internally. By pa
 </KindnessPanel>
 ```
 
-Properties of the argument is this:
+Properties of the argument is these:
 
 ```js
 type KindnessPanelContentProps = {|
@@ -121,6 +121,7 @@ When you pass a function to `<Kindness />` as a child, you can use additional va
 - [x] 0.4.0 More tests
 - [x] Scroll X
 - [x] `onClickOutside` of `<KindnessPanel />`
+- [x] Disabling user interactions `onClickOutside`
 - [ ] Accept a function as a child to `<Kindness />`
 
 ## License
