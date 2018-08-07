@@ -5,13 +5,15 @@ import type { SeriesId } from './series';
 import { Series, seriesPool } from './series';
 
 export type KindnessProps = {|
-  children: mixed,
+  // eslint-disable-next-line react/no-unused-prop-types
+  shape?: 'circle' | 'rect',
   // eslint-disable-next-line react/no-unused-prop-types
   title?: mixed,
   // eslint-disable-next-line react/no-unused-prop-types
   message?: mixed,
   order?: number | 'auto',
   seriesId?: SeriesId,
+  children: mixed,
 |}
 
 export default class Kindness extends React.Component<KindnessProps> {
@@ -53,6 +55,7 @@ export default class Kindness extends React.Component<KindnessProps> {
 }
 
 Kindness.defaultProps = {
+  shape: null,
   order: 'auto',
   seriesId: 'default',
   title: null,

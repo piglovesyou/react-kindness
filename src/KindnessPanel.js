@@ -8,6 +8,7 @@ import type { popper$Offset } from 'popper.js/dist/popper-utils';
 import debounce from 'lodash.debounce';
 import animateScrollTo from 'animated-scroll-to';
 import EventEmitter from 'events';
+
 import type { SeriesId } from './series';
 import { seriesPool } from './series';
 import {
@@ -23,7 +24,7 @@ const SPOT_MAX_RADIUS = 56;
 export type KindnessPanelProps = {|
   enabled: boolean,
   onExit: Function,
-  spotType?: 'circle' | 'rect',
+  shape?: 'circle' | 'rect',
   initialIndex?: number,
   children?: (KindnessPanelContentProps) => React.Component,
   seriesId?: SeriesId,
@@ -225,17 +226,29 @@ export default class KindnessPanel
 
   render() {
     if (!global.document) return null;
-    const { enabled, spotType, children } = this.props;
+    const { enabled, shape: spotShapeBase, children } = this.props;
     const { spotOffset, overlayStyle } = this.state;
     const k = this.series.getKindnessByIndex(this.spotIndex);
-    const { title, message } = k ? k.props : {};
+    const { shape: spotShapeSpecific, title, message } = k ? k.props : {};
     const { spotIndex } = this;
+    const spotShape = spotShapeSpecific || spotShapeBase;
 
     let spotStyle = null;
     if (spotOffset) {
-      spotStyle = spotType === 'rect'
-        ? createRectSvgStyle(spotOffset)
-        : createCircleSvgStyle(spotOffset);
+      if (spotShape === 'rect') {
+        spotStyle = createRectSvgStyle(spotOffset);
+      } else {
+        // TODO: refac
+        const { cx, cy, r } = createCircleSvgStyle(spotOffset);
+        spotStyle = {
+          x: cx - r,
+          y: cy - r,
+          rx: r,
+          ry: r,
+          width: r * 2,
+          height: r * 2,
+        };
+      }
     }
 
     const wasMounted = Boolean(this.spot.current);
@@ -276,13 +289,13 @@ export default class KindnessPanel
                   <mask id="spot">
                     <g fill="black">
                       <rect x="0" y="0" width="100%" height="100%" fill="white" />
-                      {React.createElement(spotType, {
-                        className: spotClassName,
-                        ref: this.spot,
-                        fill: 'black',
-                        filter: 'url(#blurFilter)',
-                        ...(spotStyle),
-                      })}
+                      <rect
+                        className={spotClassName}
+                        ref={this.spot}
+                        fill="black"
+                        filter="url(#blurFilter)"
+                        {...(spotOffset ? spotStyle : null)}
+                      />
                     </g>
                   </mask>
                   <rect
@@ -308,7 +321,7 @@ export default class KindnessPanel
 
 KindnessPanel.defaultProps = {
   initialIndex: 0,
-  spotType: 'circle',
+  shape: 'circle',
   seriesId: 'default',
   children: panelContentProps => <KindnessPanelContent {...panelContentProps} />,
   onClickOutside: () => {},

@@ -47,7 +47,7 @@ A lightweight, fully-customizable kind screen guide for React
 
           <Kindness
             order={10}
-            message="To stop this, click here. You can easily setup triggers of start and stop."
+            message="To stop this, click here."
           >
             <button
               type="button"
@@ -104,16 +104,15 @@ There should be whitespace between paragraphs.
 We recommend including a README, or a file with information about your project.
           </p>
 
-          <h1 id="header-1">
-            <Kindness
-              order={15}
-              message="You can focus on whereever in a page content."
-            >
-              <span>
+          <Kindness
+            order={15}
+            shape="rect"
+            message=" Look at the smooth spot transition❤️"
+          >
+            <h1 id="header-1">
 Header 1
-              </span>
-            </Kindness>
-          </h1>
+            </h1>
+          </Kindness>
 
           <p>
 This is a normal paragraph following a header.
@@ -350,7 +349,7 @@ Small image
           <p>
             <Kindness
               order={20}
-              message="Jumping to an element by scrolling is also fine."
+              message="Scrolling also works fine. Go jump and focus anywhere on the page💨"
             >
               <img src="https://assets-cdn.github.com/images/icons/emoji/octocat.png" alt="Octocat" />
             </Kindness>

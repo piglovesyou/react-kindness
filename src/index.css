@@ -83,10 +83,11 @@
 }
 
 .react-kindness--enter-done .react-kindness__spot {
-  transition: x var(--transition-delay),
+  transition:
+  x var(--transition-delay),
   y var(--transition-delay),
-  cx var(--transition-delay),
-  cy var(--transition-delay),
+  rx var(--transition-delay),
+  ry var(--transition-delay),
   width var(--transition-delay),
   height var(--transition-delay);
 }

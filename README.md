@@ -45,7 +45,7 @@ When the `<KindnessPanel />`'s `enabled` becomes `true`, the tutorial starts.
 type KindnessPanelProps = {|
   enabled: boolean,
   onExit: Function,
-  spotType?: 'circle' | 'rect', // 'circle' by default
+  shape?: 'circle' | 'rect', // 'circle' by default
   initialIndex?: number,        // 0 by default
   children?: mixed,
   seriesId?: SeriesId,          // 'default' by default
@@ -122,8 +122,8 @@ When you pass a function to `<Kindness />` as a child, you can use additional va
 - [x] Scroll X
 - [x] `onClickOutside` of `<KindnessPanel />`
 - [x] Disabling user interactions `onClickOutside`
+- [x] feat: `<Kindness shape={'circle'|'rect'} />` with smooth spot transition of each
 - [ ] mod: Scroll to a target with decent margin even with circle spot
-- [ ] feat: `<Kindness spotType={'circle'|'rect'} />` and draw them with `<path/>`. Transitioning from rect to circle will look nice
 - [ ] Accept a function as a child to `<Kindness />`
 
 ## License
