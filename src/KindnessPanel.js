@@ -30,8 +30,14 @@ export type KindnessPanelProps = {|
   onClickOutside?: () => ?boolean,
 |};
 
+type Size = {|
+  width: number,
+  height: number,
+|};
+
 export type KindnessPanelState = {|
-  spotIndex: number,
+  spotOffset: ?popper$Offset,
+  overlayStyle: ?Size
 |}
 
 export default class KindnessPanel
@@ -173,7 +179,7 @@ export default class KindnessPanel
     });
   }
 
-  incSpotIndex(increment) {
+  incSpotIndex(increment: boolean) {
     const { spotIndex } = this;
     const newIndex = spotIndex + (increment ? 1 : -1);
     this.goIndex(newIndex);
