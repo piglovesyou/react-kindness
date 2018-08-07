@@ -61,6 +61,7 @@ type KindnessPanelProps = {|
 ```js
 export type KindnessProps = {|
   children: mixed,
+  shape?: 'circle' | 'rect',    // Use <KindnessPanel shape={} /> by default and being able to override it
   title?: mixed,                // null by default
   message?: mixed,              // null by default
   order?: number | 'auto',      // 'auto' by default
