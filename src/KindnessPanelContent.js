@@ -8,10 +8,10 @@ import {
   panelMessageClassName,
   panelTitleClassName,
 } from './classNames';
-import { KindnessPanelContentProps } from './types';
+import { KindnessPanelContentArgs } from './types';
 
-export default class KindnessPanelContent extends React.Component<KindnessPanelContentProps> {
-  constructor(props: KindnessPanelContentProps) {
+export default class KindnessPanelContent extends React.Component<KindnessPanelContentArgs> {
+  constructor(props: KindnessPanelContentArgs) {
     super(props);
     this.nextRef = React.createRef();
 

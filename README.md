@@ -46,14 +46,14 @@ opaque type SeriesId = string;
 
 type KindnessPanelProps = {|
   enabled: boolean,
-  onExit: Function,
+  onExit: () => void,
   shape?: 'circle' | 'rect', // 'circle' by default
-  initialIndex?: number,        // 0 by default
-  children?: mixed,
-  seriesId?: SeriesId,          // 'default' by default
-  onClickOutside?: () => ?boolean,  // () => {} by default.
-                                    // If false was returned, react-kindness
-                                    // tries to disable user interactions. 
+  initialIndex?: number, // 0 by default
+  children?: (KindnessPanelContentArgs) => React.Component,
+  seriesId?: SeriesId, // 'default' by default
+  onClickOutside?: () => ?boolean, // () => {} by default.
+                                   // If false was returned, react-kindness
+                                   // tries to disable user interactions.
 |};
 ```
 
@@ -61,13 +61,13 @@ type KindnessPanelProps = {|
 ## Props of `<Kindness />`
 
 ```js
-export type KindnessProps = {|
+type KindnessProps = {|
   children: mixed,
-  shape?: 'circle' | 'rect',    // Use <KindnessPanel shape={} /> by default and being able to override it
-  title?: mixed,                // null by default
-  message?: mixed,              // null by default
-  order?: number | 'auto',      // 'auto' by default
-  seriesId?: SeriesId,          // 'default' by default
+  shape?: 'circle' | 'rect', // Use <KindnessPanel shape={} /> by default and being able to override it
+  title?: mixed, // null by default
+  message?: mixed, // null by default
+  order?: number | 'auto', // 'auto' by default
+  seriesId?: SeriesId, // 'default' by default
 |}
 ```
 
@@ -92,15 +92,16 @@ By default `<KindnessPanel />` uses `<KindnessPanelContent />` internally. By pa
 Properties of the argument is these:
 
 ```js
-type KindnessPanelContentProps = {|
+type KindnessPanelContentArgs = {|
   title: mixed,
   message: mixed,
   totalSize: number,
   currentIndex: number,
-  goPrev: ?Function,
-  goNext: ?Function,
-  skip: Function,
-  goIndex: Function,
+  goPrev: () => void,
+  goNext: () => void,
+  skip: () => void,
+  goIndex: (number) => void,
+  transitionEmitter: EventEmitter,
 |};
 ```
 

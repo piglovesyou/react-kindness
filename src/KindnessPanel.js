@@ -9,7 +9,7 @@ import type { popper$Offset } from 'popper.js/dist/popper-utils';
 import debounce from 'lodash.debounce';
 import animateScrollTo from 'animated-scroll-to';
 import EventEmitter from 'events';
-import type { KindnessPanelProps, KindnessPanelState, KindnessPanelContentProps } from './types';
+import type { KindnessPanelProps, KindnessPanelState, KindnessPanelContentArgs } from './types';
 
 import { seriesPool } from './series';
 import {
@@ -223,7 +223,7 @@ export default class KindnessPanel
     }
 
     const wasMounted = Boolean(this.spot.current);
-    const panelContentProps: KindnessPanelContentProps = {
+    const panelContentProps: KindnessPanelContentArgs = {
       title,
       message,
       totalSize: this.series.size,
