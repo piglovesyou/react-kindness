@@ -19,7 +19,7 @@ import KindnessPanelContent from './KindnessPanelContent';
 
 const OVERLAY_TRANSITION_DELAY = 400;
 const SPOT_MARGIN = 8;
-const SPOT_MAX_RADIUS = 56;
+const SPOT_MIN_RADIUS = 56;
 
 export default class KindnessPanel
   extends React.Component<KindnessPanelProps, KindnessPanelState> {
@@ -197,7 +197,7 @@ export default class KindnessPanel
   createSpotOffset(spotIndex: number): ?popper$Offset {
     if (this.panel.current && this.spot.current && this.series.hasKindnessByIndex(spotIndex)) {
       const targetEl = this.series.getKindnessElementByIndex(spotIndex);
-      return getReferenceOffsets(null, this.spot.current, targetEl);
+      return getReferenceOffsets(null, this.panel.current, targetEl);
     }
     return null;
   }
@@ -315,10 +315,10 @@ function scrollViewport(axis, spotOffset) {
 function createCircleSvgStyle(popperOffset: popper$Offset) {
   const wc = (popperOffset.width / 2);
   const hc = (popperOffset.height / 2);
-  const rad = wc + (SPOT_MARGIN * 2);
+  // const rad = wc + (SPOT_MARGIN * 2);
   const cx = popperOffset.left + wc;
   const cy = popperOffset.top + hc;
-  const r = Math.min(rad, SPOT_MAX_RADIUS);
+  const r = Math.max((popperOffset.width + popperOffset.height) / 4, SPOT_MIN_RADIUS);
   return {
     x: cx - r,
     y: cy - r,
