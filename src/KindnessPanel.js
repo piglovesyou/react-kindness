@@ -21,6 +21,7 @@ const OVERLAY_TRANSITION_DELAY = 400;
 const SPOT_MARGIN = 8;
 const SPOT_MIN_RADIUS = 56;
 const SCROLL_OFFSET = 16;
+const BLUR_STD_DEVIATION = 4;
 
 export default class KindnessPanel
   extends React.Component<KindnessPanelProps, KindnessPanelState> {
@@ -254,7 +255,7 @@ export default class KindnessPanel
                   height="100%"
                 >
                   <filter id="blurFilter">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
+                    <feGaussianBlur in="SourceGraphic" stdDeviation={BLUR_STD_DEVIATION} />
                   </filter>
                   <mask id="spot">
                     <g fill="black">
