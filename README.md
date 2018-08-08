@@ -126,7 +126,7 @@ When you pass a function to `<Kindness />` as a child, you can use additional va
 - [x] `onClickOutside` of `<KindnessPanel />`
 - [x] Disabling user interactions `onClickOutside`
 - [x] feat: `<Kindness shape={'circle'|'rect'} />` with smooth spot transition of each
-- [ ] mod: Scroll to a target with decent margin even with circle spot
+- [x] mod: Scroll to a target with decent margin even with circle spot
 - [ ] Accept a function as a child to `<Kindness />`
 
 ## License

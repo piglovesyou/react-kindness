@@ -142,8 +142,9 @@ export default class KindnessPanel
       && this.svg.current
       && this.spot.current
       && spotOffset) {
-      scrollViewport('y', spotOffset);
-      scrollViewport('x', spotOffset);
+      const {spotShape} = this.props;
+      scrollViewport('y', spotShape, spotOffset);
+      scrollViewport('x', spotShape, spotOffset);
     }
   }
 
@@ -294,7 +295,7 @@ KindnessPanel.defaultProps = {
   onClickOutside: () => {},
 };
 
-function scrollViewport(axis, spotOffset) {
+function scrollViewport(axis, spotShape, spotOffset) {
   const offsetProp = axis === 'x' ? 'left' : 'top';
   const sizeProp = axis === 'x' ? 'width' : 'height';
   const horizontal = axis === 'x';
@@ -302,13 +303,22 @@ function scrollViewport(axis, spotOffset) {
   const viewportSize = axis === 'x'
     ? global.document.documentElement.clientWidth
     : global.document.documentElement.clientHeight;
-  const offsetSize = spotOffset[offsetProp];
-  const spotEdge = offsetSize + spotOffset[sizeProp];
+
+  let offsetSize = spotOffset[offsetProp];
+  let spotEdge = offsetSize + spotOffset[sizeProp];
+  if (spotShape === 'rect') {
+     offsetSize = spotOffset[offsetProp];
+     spotEdge = offsetSize + spotOffset[sizeProp];
+  } else {
+    const circleOffset = createCircleSvgStyle(spotOffset);
+    offsetSize = circleOffset[axis];
+    spotEdge = offsetSize + circleOffset[sizeProp];
+  }
 
   if (scrollSize + viewportSize < offsetSize) {
-    animateScrollTo(spotEdge - viewportSize, { horizontal, offset: SPOT_MARGIN });
-  } else if (scrollSize > spotEdge) {
-    animateScrollTo(offsetSize, { horizontal, offset: SPOT_MARGIN });
+    animateScrollTo(Math.max(spotEdge - viewportSize, 0), { horizontal });
+  } else if (scrollSize > offsetSize) {
+    animateScrollTo(Math.max(offsetSize, 0), { horizontal });
   }
 }
 
@@ -318,7 +328,7 @@ function createCircleSvgStyle(popperOffset: popper$Offset) {
   // const rad = wc + (SPOT_MARGIN * 2);
   const cx = popperOffset.left + wc;
   const cy = popperOffset.top + hc;
-  const r = Math.max((popperOffset.width + popperOffset.height) / 4, SPOT_MIN_RADIUS);
+  const r = Math.max((popperOffset.width + popperOffset.height) / 4, SPOT_MIN_RADIUS) + SPOT_MARGIN;
   return {
     x: cx - r,
     y: cy - r,
