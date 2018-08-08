@@ -1,23 +1,12 @@
 // @flow
 
 import React from 'react';
-import type { SeriesId } from './series';
+import type { KindnessProps } from './types';
 import { Series, seriesPool } from './series';
-
-export type KindnessProps = {|
-  // eslint-disable-next-line react/no-unused-prop-types
-  shape?: 'circle' | 'rect',
-  // eslint-disable-next-line react/no-unused-prop-types
-  title?: mixed,
-  // eslint-disable-next-line react/no-unused-prop-types
-  message?: mixed,
-  order?: number | 'auto',
-  seriesId?: SeriesId,
-  children: mixed,
-|}
 
 export default class Kindness extends React.Component<KindnessProps> {
   constructor(props: KindnessProps) {
+    if (!props.seriesId) throw new Error('never');
     super(props);
     this.series = seriesPool.getOrCreate(props.seriesId);
     this.ref = React.createRef();

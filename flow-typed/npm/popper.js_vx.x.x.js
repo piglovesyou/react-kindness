@@ -28,6 +28,7 @@ declare module 'popper.js/dist/popper-utils' {
   |};
   declare module .exports: {
     getReferenceOffsets: (mixed, HTMLElement, HTMLElement, ?boolean) => popper$Offset,
+    getScroll: (HTMLElement, 'top' | 'left') => number,
   }
 }
 

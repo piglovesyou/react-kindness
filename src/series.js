@@ -1,11 +1,7 @@
 // @flow
 
 import type Kindness from './Kindness';
-
-// ESLint provides an error for opaque
-type SeriesId = string;
-
-export type { SeriesId };
+import type { SeriesId } from './types';
 
 export class Series extends Map<number, Kindness> {
   getOrderKeyByIndex(index: number): number {
@@ -19,7 +15,7 @@ export class Series extends Map<number, Kindness> {
     return this.has(key);
   }
 
-  getKindnessByIndex(index: number): Kindness {
+  getKindnessByIndex(index: number): ?Kindness {
     const key = this.getOrderKeyByIndex(index);
     const k = this.get(key);
     if (!k) return null;

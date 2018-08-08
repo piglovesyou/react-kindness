@@ -1,80 +1,36 @@
+// @flow
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Popper from 'popper.js';
-// Use "umd" since somehow Babel on Mocha cannot make use of popper.js/dist/popper-utils
-import { getReferenceOffsets, getScroll } from 'popper.js/dist/umd/popper-utils';
+import { getReferenceOffsets, getScroll } from 'popper.js/dist/popper-utils';
 import type { popper$Offset } from 'popper.js/dist/popper-utils';
 import debounce from 'lodash.debounce';
 import animateScrollTo from 'animated-scroll-to';
 import EventEmitter from 'events';
+import type { KindnessPanelProps, KindnessPanelState, KindnessPanelContentProps } from './types';
 
-import type { SeriesId } from './series';
 import { seriesPool } from './series';
 import {
   classnames, svgClassName, overlayClassName, panelClassName, rootClassName, spotClassName,
 } from './classNames';
 import KindnessPanelContent from './KindnessPanelContent';
-import { KindnessPanelContentProps } from './types';
 
 const OVERLAY_TRANSITION_DELAY = 400;
 const SPOT_MARGIN = 8;
 const SPOT_MAX_RADIUS = 56;
 
-export type KindnessPanelProps = {|
-  enabled: boolean,
-  onExit: Function,
-  shape?: 'circle' | 'rect',
-  initialIndex?: number,
-  children?: (KindnessPanelContentProps) => React.Component,
-  seriesId?: SeriesId,
-  onClickOutside?: () => ?boolean,
-|};
-
-type Size = {|
-  width: number,
-  height: number,
-|};
-
-export type KindnessPanelState = {|
-  spotOffset: ?popper$Offset,
-  overlayStyle: ?Size
-|}
-
 export default class KindnessPanel
   extends React.Component<KindnessPanelProps, KindnessPanelState> {
+
   constructor(props: KindnessPanelProps) {
+    if (!props.seriesId) throw new Error('never');
     super(props);
 
     this.state = {
       spotOffset: null,
       overlayStyle: {},
-    };
-
-    this.onClickOutside = (e) => {
-      const { enabled } = this.props;
-      if (!enabled) return;
-      if (!this.panel.current) return;
-      if (!this.series.hasKindnessByIndex(this.spotIndex)) return;
-      const kEl = this.series.getKindnessElementByIndex(this.spotIndex);
-      if (this.panel.current.contains(e.target) || kEl.contains(e.target)) return;
-      const rv = props.onClickOutside(e);
-
-      if (rv === false) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        if (!this.svg.current) return;
-        // Block the user interaction
-        const handler = () => {
-          setTimeout(() => {
-            this.svg.current.style.pointerEvents = '';
-            document.removeEventListener('mouseup', handler);
-          });
-        };
-        document.addEventListener('mouseup', handler);
-        this.svg.current.style.pointerEvents = 'auto';
-      }
     };
 
     this.spotIndex = -1;
@@ -88,10 +44,6 @@ export default class KindnessPanel
 
     this.onWindowResize = debounce(this.updateOverlayStyle, 10);
   }
-
-  // componentWillMount() {
-  //   if (!global.document) return;
-  // }
 
   componentDidMount() {
     const { enabled, initialIndex } = this.props;
@@ -119,6 +71,32 @@ export default class KindnessPanel
     this.disposeListeners();
   }
 
+  onDocumentClick = (e: MouseEvent): ?boolean => {
+    const { enabled, onClickOutside } = this.props;
+    if (!enabled) return;
+    if (!this.panel.current) return;
+    if (!this.series.hasKindnessByIndex(this.spotIndex)) return;
+    const kEl = this.series.getKindnessElementByIndex(this.spotIndex);
+    if (this.panel.current.contains(e.target) || kEl.contains(e.target)) return;
+    const rv = onClickOutside(e);
+
+    if (rv === false) {
+      // Block the user interaction
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      if (!this.svg.current) return;
+      const handler = () => {
+        setTimeout(() => {
+          this.svg.current.style.pointerEvents = '';
+          document.removeEventListener('mouseup', handler);
+        });
+      };
+      document.addEventListener('mouseup', handler);
+      this.svg.current.style.pointerEvents = 'auto';
+    }
+  };
+
   onOverlayDisapeared = () => {
     const { initialIndex } = this.props;
     this.spotIndex = initialIndex;
@@ -138,20 +116,20 @@ export default class KindnessPanel
     onExit();
   };
 
-  goNext = () => {
+  goNext = (): void => {
     this.incSpotIndex(true);
   };
 
-  goPrev = () => {
+  goPrev = ():void => {
     this.incSpotIndex(false);
   };
 
-  goIndex = (index) => {
+  goIndex = (index: number): void => {
     if (!this.series.hasKindnessByIndex(index)) return;
     this.updateSpot(index);
   };
 
-  updateSpot(newIndex) {
+  updateSpot(newIndex: number): void {
     this.spotIndex = newIndex;
     this.reattachListeners(newIndex);
     const spotOffset = this.createSpotOffset(newIndex);
@@ -199,7 +177,7 @@ export default class KindnessPanel
 
     if (!this.isViewportEventObserved) {
       global.addEventListener('resize', this.onWindowResize);
-      global.document.addEventListener('mousedown', this.onClickOutside, true);
+      global.document.addEventListener('mousedown', this.onDocumentClick, true);
       this.isViewportEventObserved = true;
     }
   }
@@ -211,7 +189,7 @@ export default class KindnessPanel
     }
     if (this.isViewportEventObserved) {
       global.removeEventListener('resize', this.onWindowResize);
-      global.document.removeEventListener('mousedown', this.onClickOutside, true);
+      global.document.removeEventListener('mousedown', this.onDocumentClick, true);
       this.isViewportEventObserved = false;
     }
   }

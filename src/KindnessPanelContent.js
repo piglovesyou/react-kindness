@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import {
   classnames,
@@ -9,7 +11,7 @@ import {
 import { KindnessPanelContentProps } from './types';
 
 export default class KindnessPanelContent extends React.Component<KindnessPanelContentProps> {
-  constructor(props) {
+  constructor(props: KindnessPanelContentProps) {
     super(props);
     this.nextRef = React.createRef();
 
@@ -59,7 +61,7 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
                 key={String(i)}
                 onClick={() => goIndex(i)}
                 className={classnames(`${panelClassName}__indicator__dot`,
-                  i === currentIndex && `${panelClassName}__indicator__dot--current`)}
+                  i === currentIndex ? `${panelClassName}__indicator__dot--current` : null)}
               >
                 {''}
               </button>

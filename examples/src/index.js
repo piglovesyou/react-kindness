@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import { render } from 'react-dom';
 import { Kindness, KindnessPanel } from '../../src';
@@ -16,10 +18,6 @@ class App extends React.Component {
     const { showKindness } = this.state;
     return (
       <React.Fragment>
-
-        <a id="skip-to-content" href="#content">
-Skip to the content.
-        </a>
 
         <KindnessPanel
           enabled={showKindness}

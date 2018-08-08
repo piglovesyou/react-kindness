@@ -1,14 +1,19 @@
 // @flow
 
-import KindnessPanel, { KindnessPanelProps, KindnessPanelState } from './KindnessPanel';
-import Kindness, { KindnessProps } from './Kindness';
+import type {
+  KindnessPanelProps, KindnessPanelState, KindnessProps, KindnessPanelContentProps,
+} from './types';
+import KindnessPanel from './KindnessPanel';
+import Kindness from './Kindness';
 
-export {
-  KindnessPanel,
-  Kindness,
-};
 export type {
   KindnessProps,
   KindnessPanelProps,
   KindnessPanelState,
+  KindnessPanelContentProps,
+};
+
+export {
+  KindnessPanel,
+  Kindness,
 };
