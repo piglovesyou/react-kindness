@@ -37,7 +37,7 @@ then point out some elements that you want your guests to focus on
 </Kindness>
 ```
 
-When the `<KindnessPanel />`'s `enabled` becomes `true`, the tutorial starts.
+When the `<KindnessPanel />` becomes `enabled={true}`, the screen guide starts.
 
 ## Props of `<KindnessPanel />`
 
