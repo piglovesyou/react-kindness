@@ -20,7 +20,7 @@ import KindnessPanelContent from './KindnessPanelContent';
 const OVERLAY_TRANSITION_DELAY = 400;
 const SPOT_MARGIN = 8;
 const SPOT_MIN_RADIUS = 56;
-const SCROLL_OFFSET = 8;
+const SCROLL_OFFSET = 16;
 
 export default class KindnessPanel
   extends React.Component<KindnessPanelProps, KindnessPanelState> {
@@ -142,9 +142,11 @@ export default class KindnessPanel
       && this.svg.current
       && this.spot.current
       && spotOffset) {
-      const { spotShape } = this.props;
-      scrollViewport('y', spotShape, spotOffset);
-      scrollViewport('x', spotShape, spotOffset);
+      const k = this.series.getKindnessByIndex(this.spotIndex);
+      const { shape: shapeSpecific } = k.props;
+      const { shape: shapeBase } = this.props;
+      scrollViewport('y', shapeSpecific || shapeBase, spotOffset);
+      scrollViewport('x', shapeSpecific || shapeBase, spotOffset);
     }
   }
 
@@ -298,24 +300,26 @@ KindnessPanel.defaultProps = {
 function scrollViewport(axis, spotShape, spotOffset) {
   const offsetProp = axis === 'x' ? 'left' : 'top';
   const sizeProp = axis === 'x' ? 'width' : 'height';
+  const edgeProp = axis === 'x' ? 'right' : 'bottom';
   const horizontal = axis === 'x';
   const scrollSize = getScroll(global.document.documentElement, offsetProp);
   const viewportSize = axis === 'x'
     ? global.document.documentElement.clientWidth
     : global.document.documentElement.clientHeight;
 
-  let offsetSize = spotOffset[offsetProp];
-  let spotEdge = offsetSize + spotOffset[sizeProp];
+  let offsetSize;
+  let spotEdge;
+
   if (spotShape === 'rect') {
     offsetSize = spotOffset[offsetProp];
-    spotEdge = offsetSize + spotOffset[sizeProp];
+    spotEdge = spotOffset[edgeProp];
   } else {
     const circleOffset = createCircleSvgStyle(spotOffset);
     offsetSize = circleOffset[axis];
     spotEdge = offsetSize + circleOffset[sizeProp];
   }
 
-  if (scrollSize + viewportSize < offsetSize) {
+  if (scrollSize + viewportSize < spotEdge) {
     animateScrollTo(Math.max(spotEdge - viewportSize, 0), { horizontal, offset: SCROLL_OFFSET });
   } else if (offsetSize < scrollSize) {
     animateScrollTo(Math.max(offsetSize, 0), { horizontal, offset: -SCROLL_OFFSET });
