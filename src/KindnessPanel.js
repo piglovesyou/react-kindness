@@ -20,10 +20,10 @@ import KindnessPanelContent from './KindnessPanelContent';
 const OVERLAY_TRANSITION_DELAY = 400;
 const SPOT_MARGIN = 8;
 const SPOT_MIN_RADIUS = 56;
+const SCROLL_OFFSET = 8;
 
 export default class KindnessPanel
   extends React.Component<KindnessPanelProps, KindnessPanelState> {
-
   constructor(props: KindnessPanelProps) {
     if (!props.seriesId) throw new Error('never');
     super(props);
@@ -142,7 +142,7 @@ export default class KindnessPanel
       && this.svg.current
       && this.spot.current
       && spotOffset) {
-      const {spotShape} = this.props;
+      const { spotShape } = this.props;
       scrollViewport('y', spotShape, spotOffset);
       scrollViewport('x', spotShape, spotOffset);
     }
@@ -307,8 +307,8 @@ function scrollViewport(axis, spotShape, spotOffset) {
   let offsetSize = spotOffset[offsetProp];
   let spotEdge = offsetSize + spotOffset[sizeProp];
   if (spotShape === 'rect') {
-     offsetSize = spotOffset[offsetProp];
-     spotEdge = offsetSize + spotOffset[sizeProp];
+    offsetSize = spotOffset[offsetProp];
+    spotEdge = offsetSize + spotOffset[sizeProp];
   } else {
     const circleOffset = createCircleSvgStyle(spotOffset);
     offsetSize = circleOffset[axis];
@@ -316,9 +316,9 @@ function scrollViewport(axis, spotShape, spotOffset) {
   }
 
   if (scrollSize + viewportSize < offsetSize) {
-    animateScrollTo(Math.max(spotEdge - viewportSize, 0), { horizontal });
-  } else if (scrollSize > offsetSize) {
-    animateScrollTo(Math.max(offsetSize, 0), { horizontal });
+    animateScrollTo(Math.max(spotEdge - viewportSize, 0), { horizontal, offset: SCROLL_OFFSET });
+  } else if (offsetSize < scrollSize) {
+    animateScrollTo(Math.max(offsetSize, 0), { horizontal, offset: -SCROLL_OFFSET });
   }
 }
 
