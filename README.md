@@ -4,7 +4,9 @@ A lightweight, fully-customizable kind screen guide for React
 
 ![mini demo](./resources/demo.gif)
 
-👉 [Demo](https://piglovesyou.github.io/react-kindness/)
+[👉 Demo](https://piglovesyou.github.io/react-kindness/)
+
+[👉 Concept](https://dev.to/takamura_so/react-kindness-a-customizable-screen-guide-for-react--3nn0)
 
 To install
 
