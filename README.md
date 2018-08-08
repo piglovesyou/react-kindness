@@ -32,10 +32,8 @@ then point out some elements that you want your guests to focus on
     <input type="text" {...} />
 </Kindness>
 
-<Kindness>
-    <button type="submit">
-        Submit
-    </button>
+<Kindness message="Click here to submit your post!">
+    <button type="submit">Submit</button>
 </Kindness>
 ```
 
