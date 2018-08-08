@@ -42,6 +42,8 @@ When the `<KindnessPanel />`'s `enabled` becomes `true`, the tutorial starts.
 ## Props of `<KindnessPanel />`
 
 ```js
+opaque type SeriesId = string;
+
 type KindnessPanelProps = {|
   enabled: boolean,
   onExit: Function,

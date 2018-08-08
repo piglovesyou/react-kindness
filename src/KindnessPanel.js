@@ -213,20 +213,9 @@ export default class KindnessPanel
 
     let spotStyle = null;
     if (spotOffset) {
-      if (spotShape === 'rect') {
-        spotStyle = createRectSvgStyle(spotOffset);
-      } else {
-        // TODO: refac
-        const { cx, cy, r } = createCircleSvgStyle(spotOffset);
-        spotStyle = {
-          x: cx - r,
-          y: cy - r,
-          rx: r,
-          ry: r,
-          width: r * 2,
-          height: r * 2,
-        };
-      }
+      spotStyle = spotShape === 'rect'
+        ? createRectSvgStyle(spotOffset)
+        : createCircleSvgStyle(spotOffset);
     }
 
     const wasMounted = Boolean(this.spot.current);
@@ -327,10 +316,16 @@ function createCircleSvgStyle(popperOffset: popper$Offset) {
   const wc = (popperOffset.width / 2);
   const hc = (popperOffset.height / 2);
   const rad = wc + (SPOT_MARGIN * 2);
+  const cx = popperOffset.left + wc;
+  const cy = popperOffset.top + hc;
+  const r = Math.min(rad, SPOT_MAX_RADIUS);
   return {
-    cx: popperOffset.left + wc,
-    cy: popperOffset.top + hc,
-    r: Math.min(rad, SPOT_MAX_RADIUS),
+    x: cx - r,
+    y: cy - r,
+    rx: r,
+    ry: r,
+    width: r * 2,
+    height: r * 2,
   };
 }
 
