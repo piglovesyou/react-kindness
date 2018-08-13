@@ -176,7 +176,15 @@ export default class KindnessPanel
     if (this.series.hasKindnessByIndex(spotIndex)) {
       const targetEl = this.series.getKindnessElementByIndex(spotIndex);
       if (!targetEl) throw new Error('!??');
-      this.popper = new Popper(targetEl, this.panel.current);
+      this.popper = new Popper(targetEl, this.panel.current, {
+        modifiers: {
+          insideViewport: {
+            order: 840,
+            enabled: true,
+            fn: insideViewport,
+          },
+        },
+      });
     }
 
     if (!this.isViewportEventObserved) {
@@ -297,6 +305,44 @@ KindnessPanel.defaultProps = {
   children: panelContentProps => <KindnessPanelContent {...panelContentProps} />,
   onClickOutside: () => {},
 };
+
+function insideViewport(data) {
+  const { popper } = data.offsets;
+  const { width, height } = popper;
+  let {
+    top, right, bottom, left,
+  } = popper;
+  const scrollTop = getScroll(global.document.documentElement, 'top');
+  const scrollLeft = getScroll(global.document.documentElement, 'left');
+  const viewportWidth = global.document.documentElement.clientWidth;
+  const viewportHeight = global.document.documentElement.clientHeight;
+  const viewportRight = scrollLeft + viewportWidth;
+  const viewportBottom = scrollTop + viewportHeight;
+
+  if (popper.top < scrollTop) {
+    top = scrollTop;
+    bottom = top + height;
+  } else if (popper.bottom > viewportBottom) {
+    top = viewportBottom - height;
+    bottom = viewportBottom;
+  }
+  if (popper.left < scrollLeft) {
+    left = scrollLeft;
+    right = left + width;
+  } else if (popper.right > viewportRight) {
+    left = viewportRight - width;
+    right = viewportRight;
+  }
+  return {
+    ...data,
+    offsets: {
+      ...data.offsets,
+      popper: {
+        ...popper, top, right, bottom, left,
+      },
+    },
+  };
+}
 
 function scrollViewport(axis, spotShape, spotOffset) {
   const offsetProp = axis === 'x' ? 'left' : 'top';
