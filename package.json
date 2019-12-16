@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.56",
-    "animated-scroll-to": "^1.2.2",
+    "animated-scroll-to": "^2.0.5",
     "lodash.debounce": "^4.0.8",
     "popper.js": "^1.14.4",
     "prop-types": "^15.6.2",
