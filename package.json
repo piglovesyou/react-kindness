@@ -85,8 +85,8 @@
     "webpack-dev-server": "^3.1.5"
   },
   "scripts": {
-    "lint": "eslint src examples/src && flow check",
-    "fix": "eslint src examples/src --fix",
+    "lint": "eslint src examples/src",
+    "fix": "npm run lint --fix",
     "webpack": "webpack",
     "transpile": "babel src -d dist --copy-files",
     "build": "webpack --mode production",
