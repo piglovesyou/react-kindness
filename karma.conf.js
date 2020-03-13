@@ -12,12 +12,14 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha'],
+    frameworks: ['mocha', 'karma-typescript'],
 
 
     // list of files / patterns to load in the browser
     files: [
       'src/**/*.spec.js',
+      'src/**/*.spec.ts',
+      'src/**/*.spec.tsx',
     ],
 
 
@@ -30,6 +32,8 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'src/**/*.js': [ 'webpack' ],
+      'src/**/*.ts': [ 'webpack' ],
+      'src/**/*.tsx': [ 'webpack' ],
     },
 
 
