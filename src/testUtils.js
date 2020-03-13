@@ -18,11 +18,13 @@ export function launchApp() {
   });
   const app = express();
 
-  app.use(middleware(compiler, {
-    // webpack-dev-middleware options
-  }));
+  app.use(
+    middleware(compiler, {
+      // webpack-dev-middleware options
+    }),
+  );
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const server = http.createServer(app).listen(3000, () => {
       resolve(server);
     });

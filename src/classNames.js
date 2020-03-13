@@ -10,8 +10,10 @@ export const panelTitleClassName = `${rootClassName}-panel__title`;
 export const panelMessageClassName = `${rootClassName}-panel__message`;
 
 export function classnames(...args) {
-  return Object.keys(args.reduce((o, c) => {
-    if (!c) return o;
-    return ({ ...o, [c]: true });
-  }, {})).join(' ');
+  return Object.keys(
+    args.reduce((o, c) => {
+      if (!c) return o;
+      return { ...o, [c]: true };
+    }, {}),
+  ).join(' ');
 }

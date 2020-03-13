@@ -1,19 +1,32 @@
 {
+  "root": true,
   "parser": "babel-eslint",
-  "extends": "airbnb",
+  "plugins": [
+    "prettier"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
   "env": {
+    "es6": true,
     "browser": true,
     "node": true,
     "mocha": true
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "rules": {
+    "prettier/prettier": "error",
     "import/no-extraneous-dependencies": "off",
     "jsx-a11y/href-no-hash": "off",
     "react/jsx-filename-extension": "off",
     "no-use-before-define": "off",
     "jsx-a11y/anchor-is-valid": "off",
-
     "import/no-cycle": "off", // TODO: fix
-    "react/prop-types": "off",
+    "react/prop-types": "off"
   }
 }

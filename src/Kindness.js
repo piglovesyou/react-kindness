@@ -26,11 +26,11 @@ export default class Kindness extends React.Component {
     this.series.delete(this.orderKey);
   }
 
-  series ;
+  series;
 
-  orderKey ;
+  orderKey;
 
-  ref ;
+  ref;
 
   render() {
     const { children } = this.props;

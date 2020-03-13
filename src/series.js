@@ -1,6 +1,3 @@
-//
-
-
 export class Series extends Map {
   getOrderKeyByIndex(index) {
     const key = [...this.keys()].sort()[index];
