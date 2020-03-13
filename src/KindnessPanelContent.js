@@ -1,4 +1,4 @@
-// @flow
+//      
 
 import React from 'react';
 import {
@@ -10,8 +10,8 @@ import {
 } from './classNames';
 import { KindnessPanelContentArgs } from './types';
 
-export default class KindnessPanelContent extends React.Component<KindnessPanelContentArgs> {
-  constructor(props: KindnessPanelContentArgs) {
+export default class KindnessPanelContent extends React.Component                           {
+  constructor(props                          ) {
     super(props);
     this.nextRef = React.createRef();
 

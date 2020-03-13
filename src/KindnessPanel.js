@@ -1,15 +1,15 @@
-// @flow
+//      
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Popper from 'popper.js';
 import { getReferenceOffsets, getScroll } from 'popper.js/dist/popper-utils';
-import type { popper$Offset } from 'popper.js/dist/popper-utils';
+                                                                 
 import debounce from 'lodash.debounce';
 import animateScrollTo from 'animated-scroll-to';
 import EventEmitter from 'events';
-import type { KindnessPanelProps, KindnessPanelState, KindnessPanelContentArgs } from './types';
+                                                                                                
 
 import { seriesPool } from './series';
 import {
@@ -24,8 +24,8 @@ const SCROLL_OFFSET = 16;
 const BLUR_STD_DEVIATION = 4;
 
 export default class KindnessPanel
-  extends React.Component<KindnessPanelProps, KindnessPanelState> {
-  constructor(props: KindnessPanelProps) {
+  extends React.Component                                         {
+  constructor(props                    ) {
     if (!props.seriesId) throw new Error('never');
     super(props);
 
@@ -58,7 +58,7 @@ export default class KindnessPanel
     }
   }
 
-  componentDidUpdate(prevProps: KindnessPanelProps) {
+  componentDidUpdate(prevProps                    ) {
     const { enabled } = this.props;
     const { spotIndex } = this;
 
@@ -72,7 +72,7 @@ export default class KindnessPanel
     this.disposeListeners();
   }
 
-  onDocumentClick = (e: MouseEvent): ?boolean => {
+  onDocumentClick = (e            )           => {
     const { enabled, onClickOutside } = this.props;
     if (!enabled) return;
     if (!this.panel.current) return;
@@ -117,20 +117,20 @@ export default class KindnessPanel
     onExit();
   };
 
-  goNext = (): void => {
+  goNext = ()       => {
     this.incSpotIndex(true);
   };
 
-  goPrev = ():void => {
+  goPrev = ()      => {
     this.incSpotIndex(false);
   };
 
-  goIndex = (index: number): void => {
+  goIndex = (index        )       => {
     if (!this.series.hasKindnessByIndex(index)) return;
     this.updateSpot(index);
   };
 
-  updateSpot(newIndex: number): void {
+  updateSpot(newIndex        )       {
     this.spotIndex = newIndex;
     this.reattachListeners(newIndex);
     const spotOffset = this.createSpotOffset(newIndex);
@@ -162,13 +162,13 @@ export default class KindnessPanel
     });
   }
 
-  incSpotIndex(increment: boolean) {
+  incSpotIndex(increment         ) {
     const { spotIndex } = this;
     const newIndex = spotIndex + (increment ? 1 : -1);
     this.goIndex(newIndex);
   }
 
-  reattachListeners(spotIndex: number): void {
+  reattachListeners(spotIndex        )       {
     if (!this.panel) throw new Error('');
 
     this.disposeListeners();
@@ -206,7 +206,7 @@ export default class KindnessPanel
     }
   }
 
-  createSpotOffset(spotIndex: number): ?popper$Offset {
+  createSpotOffset(spotIndex        )                 {
     if (this.panel.current && this.spot.current && this.series.hasKindnessByIndex(spotIndex)) {
       const targetEl = this.series.getKindnessElementByIndex(spotIndex);
       return getReferenceOffsets(null, this.panel.current, targetEl);
@@ -231,7 +231,7 @@ export default class KindnessPanel
     }
 
     const wasMounted = Boolean(this.spot.current);
-    const panelContentProps: KindnessPanelContentArgs = {
+    const panelContentProps                           = {
       title,
       message,
       totalSize: this.series.size,
@@ -373,7 +373,7 @@ function scrollViewport(axis, spotShape, spotOffset) {
   }
 }
 
-function createCircleSvgStyle(popperOffset: popper$Offset) {
+function createCircleSvgStyle(popperOffset               ) {
   const wc = (popperOffset.width / 2);
   const hc = (popperOffset.height / 2);
   // const rad = wc + (SPOT_MARGIN * 2);
@@ -390,7 +390,7 @@ function createCircleSvgStyle(popperOffset: popper$Offset) {
   };
 }
 
-function createRectSvgStyle(popperOffset: popper$Offset) {
+function createRectSvgStyle(popperOffset               ) {
   return {
     x: popperOffset.left - SPOT_MARGIN,
     y: popperOffset.top - SPOT_MARGIN,

@@ -1,4 +1,4 @@
-// @flow
+//      
 
 import webpack from 'webpack';
 import middleware from 'webpack-dev-middleware';
@@ -6,11 +6,11 @@ import express from 'express';
 import http from 'http';
 import webpackConfig from '../webpack.config';
 
-export function timeout(ms: number): Promise<void> {
+export function timeout(ms        )                {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export function launchApp(): Promise<mixed> {
+export function launchApp()                 {
   const compiler = webpack({
     ...webpackConfig,
     mode: 'none',

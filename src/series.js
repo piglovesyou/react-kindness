@@ -1,28 +1,28 @@
-// @flow
+//      
 
-import type Kindness from './Kindness';
-import type { SeriesId } from './types';
+                                       
+                                        
 
-export class Series extends Map<number, Kindness> {
-  getOrderKeyByIndex(index: number): number {
+export class Series extends Map                   {
+  getOrderKeyByIndex(index        )         {
     const key = [...this.keys()].sort()[index];
     if (typeof key !== 'number') return -1;
     return key;
   }
 
-  hasKindnessByIndex(index: number): boolean {
+  hasKindnessByIndex(index        )          {
     const key = this.getOrderKeyByIndex(index);
     return this.has(key);
   }
 
-  getKindnessByIndex(index: number): ?Kindness {
+  getKindnessByIndex(index        )            {
     const key = this.getOrderKeyByIndex(index);
     const k = this.get(key);
     if (!k) return null;
     return k;
   }
 
-  getKindnessElementByIndex(index: number): ?HTMLElement {
+  getKindnessElementByIndex(index        )               {
     const k = this.getKindnessByIndex(index);
     if (!k) return null;
     return k.ref.current;
@@ -31,7 +31,7 @@ export class Series extends Map<number, Kindness> {
   /**
    * Returns order key for later use.
    */
-  append(k: Kindness): number {
+  append(k          )         {
     const lastKey = this.getOrderKeyByIndex(this.size - 1);
     if (lastKey < 0) {
       this.set(0, k);
@@ -43,8 +43,8 @@ export class Series extends Map<number, Kindness> {
   }
 }
 
-export class SeriesPool extends Map<SeriesId, Series> {
-  getOrCreate(key: SeriesId): Series {
+export class SeriesPool extends Map                   {
+  getOrCreate(key          )         {
     const existing = this.get(key);
     if (existing) return existing;
     const created = new Series();
