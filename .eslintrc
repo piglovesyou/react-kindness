@@ -14,5 +14,6 @@
     "jsx-a11y/anchor-is-valid": "off",
 
     "import/no-cycle": "off", // TODO: fix
+    "react/prop-types": "off",
   }
 }

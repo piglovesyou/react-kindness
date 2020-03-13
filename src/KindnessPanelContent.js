@@ -1,5 +1,3 @@
-//      
-
 import React from 'react';
 import {
   classnames,
@@ -8,10 +6,9 @@ import {
   panelMessageClassName,
   panelTitleClassName,
 } from './classNames';
-import { KindnessPanelContentArgs } from './types';
 
-export default class KindnessPanelContent extends React.Component                           {
-  constructor(props                          ) {
+export default class KindnessPanelContent extends React.Component {
+  constructor(props) {
     super(props);
     this.nextRef = React.createRef();
 

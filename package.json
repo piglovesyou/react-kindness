@@ -86,7 +86,7 @@
   },
   "scripts": {
     "lint": "eslint src examples/src",
-    "fix": "npm run lint --fix",
+    "fix": "eslint src examples/src --fix",
     "webpack": "webpack",
     "transpile": "babel src -d dist --copy-files",
     "build": "webpack --mode production",

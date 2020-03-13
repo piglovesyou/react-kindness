@@ -1,11 +1,9 @@
-//      
-
 import React from 'react';
-                                             
-import { Series, seriesPool } from './series';
 
-export default class Kindness extends React.Component                {
-  constructor(props               ) {
+import { seriesPool } from './series';
+
+export default class Kindness extends React.Component {
+  constructor(props) {
     if (!props.seriesId) throw new Error('never');
     super(props);
     this.series = seriesPool.getOrCreate(props.seriesId);
@@ -28,11 +26,11 @@ export default class Kindness extends React.Component                {
     this.series.delete(this.orderKey);
   }
 
-  series        ;
+  series ;
 
-  orderKey         ;
+  orderKey ;
 
-  ref           ;
+  ref ;
 
   render() {
     const { children } = this.props;
