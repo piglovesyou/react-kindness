@@ -22,8 +22,7 @@ describe('<KindnessPanel />', function describe() {
     mountOpts = { attachTo: appContainer };
   });
 
-  afterEach(async () => {
-  });
+  afterEach(async () => {});
 
   after(async () => {
     app.unmount();
@@ -31,18 +30,25 @@ describe('<KindnessPanel />', function describe() {
   });
 
   it('shows nothing when no <Kindness />', async () => {
-    app = mount((
+    app = mount(
       <div>
         <KindnessPanel enabled={false} onExit={() => {}} />
-      </div>
-    ), mountOpts);
+      </div>,
+      mountOpts,
+    );
     assert(document.querySelector('.react-kindness'));
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '0');
+    deepStrictEqual(
+      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      '0',
+    );
 
     app.setProps({ enabled: String(true) });
     await timeout(500); // Wait for transition
     assert(document.querySelector('.react-kindness'));
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '0');
+    deepStrictEqual(
+      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      '0',
+    );
   });
 
   it('shows and hide a panel when <Kindness /> exists', async () => {
@@ -60,12 +66,12 @@ describe('<KindnessPanel />', function describe() {
           <React.Fragment>
             <KindnessPanel
               enabled={showKindness}
-              onExit={() => { this.setState({ showKindness: false }); }}
+              onExit={() => {
+                this.setState({ showKindness: false });
+              }}
             />
             <Kindness>
-              <span>
-yeah
-              </span>
+              <span>yeah</span>
             </Kindness>
           </React.Fragment>
         );
@@ -75,30 +81,38 @@ yeah
 
     app.setState({ showKindness: true });
     await timeout(500); // Wait for transition
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '1');
+    deepStrictEqual(
+      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      '1',
+    );
 
     const nextEl = app.find('.react-kindness-panel__bottombar button').last();
     nextEl.simulate('click');
     await timeout(500); // Wait for transition
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '0');
+    deepStrictEqual(
+      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      '0',
+    );
   });
 
   it('can initially shows on componentDidMount', async () => {
-    app = mount((
+    app = mount(
       <div>
         <KindnessPanel enabled onExit={() => {}} />
         <p>
           <Kindness>
-            <span>
-yeah
-            </span>
+            <span>yeah</span>
           </Kindness>
         </p>
-      </div>
-    ), mountOpts);
+      </div>,
+      mountOpts,
+    );
     assert(document.querySelector('.react-kindness'));
     await timeout(500); // Wait for transition
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '1');
+    deepStrictEqual(
+      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      '1',
+    );
   });
 
   it('follows order of <Kindness /> on click "next"', async () => {
@@ -116,48 +130,38 @@ yeah
           <React.Fragment>
             <KindnessPanel
               enabled={showKindness}
-              onExit={() => { this.setState({ showKindness: false }); }}
+              onExit={() => {
+                this.setState({ showKindness: false });
+              }}
             />
             <p>
               <Kindness message="zero">
-                <span>
-zero
-                </span>
+                <span>zero</span>
               </Kindness>
             </p>
             <p>
               <Kindness message="two" order={200}>
-                <span>
-two
-                </span>
+                <span>two</span>
               </Kindness>
             </p>
             <p>
               <Kindness message="one" order={100}>
-                <span>
-one
-                </span>
+                <span>one</span>
               </Kindness>
             </p>
             <p>
               <Kindness message="three">
-                <span>
-three
-                </span>
+                <span>three</span>
               </Kindness>
             </p>
             <p>
               <Kindness message="four" order={400}>
-                <span>
-four
-                </span>
+                <span>four</span>
               </Kindness>
             </p>
             <p>
               <Kindness message="five">
-                <span>
-five
-                </span>
+                <span>five</span>
               </Kindness>
             </p>
           </React.Fragment>
@@ -193,40 +197,38 @@ five
 
     nextEl.simulate('click');
     await timeout(500); // Wait for transition
-    deepStrictEqual(getComputedStyle(document.querySelector('.react-kindness__svg')).opacity, '0');
+    deepStrictEqual(
+      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      '0',
+    );
   });
 
   it('scrolls to the target', async () => {
-    app = mount((
+    app = mount(
       <div>
         <KindnessPanel enabled onExit={() => {}} />
         <header style={{ border: '1px #fcc dashed', height: 2000 }}>
           <p>
             <Kindness order={900}>
-              <span>
-yeah
-              </span>
+              <span>yeah</span>
             </Kindness>
           </p>
           <p>
             <Kindness order={0}>
-              <span>
-yeah
-              </span>
+              <span>yeah</span>
             </Kindness>
           </p>
         </header>
         <main>
           <p>
             <Kindness order={100}>
-              <span>
-yeah
-              </span>
+              <span>yeah</span>
             </Kindness>
           </p>
         </main>
-      </div>
-    ), mountOpts);
+      </div>,
+      mountOpts,
+    );
     assert(document.querySelector('.react-kindness'));
     await timeout(500); // Wait for transition
     deepStrictEqual(window.scrollY, 0);

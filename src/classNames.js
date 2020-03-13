@@ -1,4 +1,4 @@
-// @flow
+//
 
 export const rootClassName = 'react-kindness';
 export const svgClassName = `${rootClassName}__svg`;
@@ -9,9 +9,11 @@ export const panelArrowClassName = `${rootClassName}-panel__arrow`;
 export const panelTitleClassName = `${rootClassName}-panel__title`;
 export const panelMessageClassName = `${rootClassName}-panel__message`;
 
-export function classnames(...args: Array<?string>): string {
-  return Object.keys(args.reduce((o, c) => {
-    if (!c) return o;
-    return ({ ...o, [c]: true });
-  }, {})).join(' ');
+export function classnames(...args) {
+  return Object.keys(
+    args.reduce((o, c) => {
+      if (!c) return o;
+      return { ...o, [c]: true };
+    }, {}),
+  ).join(' ');
 }

@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import {
   classnames,
@@ -8,10 +6,9 @@ import {
   panelMessageClassName,
   panelTitleClassName,
 } from './classNames';
-import { KindnessPanelContentArgs } from './types';
 
-export default class KindnessPanelContent extends React.Component<KindnessPanelContentArgs> {
-  constructor(props: KindnessPanelContentArgs) {
+export default class KindnessPanelContent extends React.Component {
+  constructor(props) {
     super(props);
     this.nextRef = React.createRef();
 
@@ -27,7 +24,7 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
   onEntered = () => {
     if (!this.nextRef.current) return;
     this.nextRef.current.focus();
-  }
+  };
 
   render() {
     const {
@@ -43,16 +40,8 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
     return (
       <React.Fragment>
         <div className={`${panelClassName}__content`}>
-          {title && (
-          <h3 className={panelTitleClassName}>
-            {title}
-          </h3>
-          )}
-          {message && (
-          <p className={panelMessageClassName}>
-            {message}
-          </p>
-          )}
+          {title && <h3 className={panelTitleClassName}>{title}</h3>}
+          {message && <p className={panelMessageClassName}>{message}</p>}
           <span className={`${panelClassName}__spacer`} />
           <div className={`${panelClassName}__indicator`}>
             {Array.from(Array(totalSize)).map((_, i) => (
@@ -60,8 +49,12 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
                 type="button"
                 key={String(i)}
                 onClick={() => goIndex(i)}
-                className={classnames(`${panelClassName}__indicator__dot`,
-                  i === currentIndex ? `${panelClassName}__indicator__dot--current` : null)}
+                className={classnames(
+                  `${panelClassName}__indicator__dot`,
+                  i === currentIndex
+                    ? `${panelClassName}__indicator__dot--current`
+                    : null,
+                )}
               >
                 {''}
               </button>
@@ -69,17 +62,13 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
           </div>
         </div>
         <div className={`${panelClassName}__bottombar`}>
-          {
-            goNext && (
-              <button type="button" onClick={skip}>
-                Skip
-              </button>
-            )
-          }
+          {goNext && (
+            <button type="button" onClick={skip}>
+              Skip
+            </button>
+          )}
 
-          <span className={`${panelClassName}__spacer`}>
-            {''}
-          </span>
+          <span className={`${panelClassName}__spacer`}>{''}</span>
           <button
             type="button"
             onClick={goPrev}
@@ -87,22 +76,17 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
           >
             Prev
           </button>
-          {
-            goNext ? (
-              <button type="button" onClick={goNext} ref={this.nextRef}>
-                Next
-              </button>
-            ) : (
-              <button type="button" onClick={skip} ref={this.nextRef}>
-                Done
-              </button>
-            )
-          }
+          {goNext ? (
+            <button type="button" onClick={goNext} ref={this.nextRef}>
+              Next
+            </button>
+          ) : (
+            <button type="button" onClick={skip} ref={this.nextRef}>
+              Done
+            </button>
+          )}
         </div>
-        <span
-          className={panelArrowClassName}
-          x-arrow="true"
-        >
+        <span className={panelArrowClassName} x-arrow="true">
           {' '}
         </span>
       </React.Fragment>

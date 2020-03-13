@@ -1,19 +1,21 @@
-// @flow
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Popper from 'popper.js';
 import { getReferenceOffsets, getScroll } from 'popper.js/dist/popper-utils';
-import type { popper$Offset } from 'popper.js/dist/popper-utils';
+
 import debounce from 'lodash.debounce';
 import animateScrollTo from 'animated-scroll-to';
 import EventEmitter from 'events';
-import type { KindnessPanelProps, KindnessPanelState, KindnessPanelContentArgs } from './types';
 
 import { seriesPool } from './series';
 import {
-  classnames, svgClassName, overlayClassName, panelClassName, rootClassName, spotClassName,
+  classnames,
+  svgClassName,
+  overlayClassName,
+  panelClassName,
+  rootClassName,
+  spotClassName,
 } from './classNames';
 import KindnessPanelContent from './KindnessPanelContent';
 
@@ -23,9 +25,8 @@ const SPOT_MIN_RADIUS = 56;
 const SCROLL_OFFSET = 16;
 const BLUR_STD_DEVIATION = 4;
 
-export default class KindnessPanel
-  extends React.Component<KindnessPanelProps, KindnessPanelState> {
-  constructor(props: KindnessPanelProps) {
+export default class KindnessPanel extends React.Component {
+  constructor(props) {
     if (!props.seriesId) throw new Error('never');
     super(props);
 
@@ -58,7 +59,7 @@ export default class KindnessPanel
     }
   }
 
-  componentDidUpdate(prevProps: KindnessPanelProps) {
+  componentDidUpdate(prevProps) {
     const { enabled } = this.props;
     const { spotIndex } = this;
 
@@ -72,7 +73,7 @@ export default class KindnessPanel
     this.disposeListeners();
   }
 
-  onDocumentClick = (e: MouseEvent): ?boolean => {
+  onDocumentClick = e => {
     const { enabled, onClickOutside } = this.props;
     if (!enabled) return;
     if (!this.panel.current) return;
@@ -117,20 +118,20 @@ export default class KindnessPanel
     onExit();
   };
 
-  goNext = (): void => {
+  goNext = () => {
     this.incSpotIndex(true);
   };
 
-  goPrev = ():void => {
+  goPrev = () => {
     this.incSpotIndex(false);
   };
 
-  goIndex = (index: number): void => {
+  goIndex = index => {
     if (!this.series.hasKindnessByIndex(index)) return;
     this.updateSpot(index);
   };
 
-  updateSpot(newIndex: number): void {
+  updateSpot(newIndex) {
     this.spotIndex = newIndex;
     this.reattachListeners(newIndex);
     const spotOffset = this.createSpotOffset(newIndex);
@@ -139,10 +140,7 @@ export default class KindnessPanel
       overlayStyle: createOverlayStyle(),
     });
 
-    if (newIndex >= 0
-      && this.svg.current
-      && this.spot.current
-      && spotOffset) {
+    if (newIndex >= 0 && this.svg.current && this.spot.current && spotOffset) {
       const k = this.series.getKindnessByIndex(this.spotIndex);
       const { shape: shapeSpecific } = k.props;
       const { shape: shapeBase } = this.props;
@@ -162,13 +160,13 @@ export default class KindnessPanel
     });
   }
 
-  incSpotIndex(increment: boolean) {
+  incSpotIndex(increment) {
     const { spotIndex } = this;
     const newIndex = spotIndex + (increment ? 1 : -1);
     this.goIndex(newIndex);
   }
 
-  reattachListeners(spotIndex: number): void {
+  reattachListeners(spotIndex) {
     if (!this.panel) throw new Error('');
 
     this.disposeListeners();
@@ -201,13 +199,21 @@ export default class KindnessPanel
     }
     if (this.isViewportEventObserved) {
       global.removeEventListener('resize', this.onWindowResize);
-      global.document.removeEventListener('mousedown', this.onDocumentClick, true);
+      global.document.removeEventListener(
+        'mousedown',
+        this.onDocumentClick,
+        true,
+      );
       this.isViewportEventObserved = false;
     }
   }
 
-  createSpotOffset(spotIndex: number): ?popper$Offset {
-    if (this.panel.current && this.spot.current && this.series.hasKindnessByIndex(spotIndex)) {
+  createSpotOffset(spotIndex) {
+    if (
+      this.panel.current &&
+      this.spot.current &&
+      this.series.hasKindnessByIndex(spotIndex)
+    ) {
       const targetEl = this.series.getKindnessElementByIndex(spotIndex);
       return getReferenceOffsets(null, this.panel.current, targetEl);
     }
@@ -225,75 +231,75 @@ export default class KindnessPanel
 
     let spotStyle = null;
     if (spotOffset) {
-      spotStyle = spotShape === 'rect'
-        ? createRectSvgStyle(spotOffset)
-        : createCircleSvgStyle(spotOffset);
+      spotStyle =
+        spotShape === 'rect'
+          ? createRectSvgStyle(spotOffset)
+          : createCircleSvgStyle(spotOffset);
     }
 
     const wasMounted = Boolean(this.spot.current);
-    const panelContentProps: KindnessPanelContentArgs = {
+    const panelContentProps = {
       title,
       message,
       totalSize: this.series.size,
       currentIndex: this.spotIndex,
-      goPrev: this.series.hasKindnessByIndex(spotIndex - 1) ? this.goPrev : null,
-      goNext: this.series.hasKindnessByIndex(spotIndex + 1) ? this.goNext : null,
+      goPrev: this.series.hasKindnessByIndex(spotIndex - 1)
+        ? this.goPrev
+        : null,
+      goNext: this.series.hasKindnessByIndex(spotIndex + 1)
+        ? this.goNext
+        : null,
       goIndex: this.goIndex,
       skip: this.skip,
       transitionEmitter: this.transitionEmitter,
     };
 
-    return (
-      ReactDOM.createPortal(
-        <CSSTransition
-          in={wasMounted && enabled}
-          timeout={OVERLAY_TRANSITION_DELAY}
-          classNames={`${rootClassName}-`}
-          onEntered={() => this.transitionEmitter.emit('onEntered')}
-          onExited={this.onOverlayDisapeared}
-        >
-          {() => (
-            <React.Fragment>
-              <div className={classnames(rootClassName)}>
-                <svg
-                  ref={this.svg}
-                  className={svgClassName}
-                  style={overlayStyle}
-                  width="100%"
-                  height="100%"
-                >
-                  <filter id="blurFilter">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation={BLUR_STD_DEVIATION} />
-                  </filter>
-                  <mask id="spot">
-                    <g fill="black">
-                      <rect x="0" y="0" width="100%" height="100%" fill="white" />
-                      <rect
-                        className={spotClassName}
-                        ref={this.spot}
-                        fill="black"
-                        filter="url(#blurFilter)"
-                        {...(spotOffset ? spotStyle : null)}
-                      />
-                    </g>
-                  </mask>
-                  <rect
-                    className={overlayClassName}
-                    mask="url(#spot)"
+    return ReactDOM.createPortal(
+      <CSSTransition
+        in={wasMounted && enabled}
+        timeout={OVERLAY_TRANSITION_DELAY}
+        classNames={`${rootClassName}-`}
+        onEntered={() => this.transitionEmitter.emit('onEntered')}
+        onExited={this.onOverlayDisapeared}
+      >
+        {() => (
+          <React.Fragment>
+            <div className={classnames(rootClassName)}>
+              <svg
+                ref={this.svg}
+                className={svgClassName}
+                style={overlayStyle}
+                width="100%"
+                height="100%"
+              >
+                <filter id="blurFilter">
+                  <feGaussianBlur
+                    in="SourceGraphic"
+                    stdDeviation={BLUR_STD_DEVIATION}
                   />
-                </svg>
-                <div
-                  ref={this.panel}
-                  className={panelClassName}
-                >
-                  {children(panelContentProps)}
-                </div>
+                </filter>
+                <mask id="spot">
+                  <g fill="black">
+                    <rect x="0" y="0" width="100%" height="100%" fill="white" />
+                    <rect
+                      className={spotClassName}
+                      ref={this.spot}
+                      fill="black"
+                      filter="url(#blurFilter)"
+                      {...(spotOffset ? spotStyle : null)}
+                    />
+                  </g>
+                </mask>
+                <rect className={overlayClassName} mask="url(#spot)" />
+              </svg>
+              <div ref={this.panel} className={panelClassName}>
+                {children(panelContentProps)}
               </div>
-            </React.Fragment>
-          )}
-        </CSSTransition>,
-        global.document.body,
-      )
+            </div>
+          </React.Fragment>
+        )}
+      </CSSTransition>,
+      global.document.body,
     );
   }
 }
@@ -302,16 +308,17 @@ KindnessPanel.defaultProps = {
   initialIndex: 0,
   shape: 'circle',
   seriesId: 'default',
-  children: panelContentProps => <KindnessPanelContent {...panelContentProps} />,
+  // eslint-disable-next-line react/display-name
+  children: panelContentProps => (
+    <KindnessPanelContent {...panelContentProps} />
+  ),
   onClickOutside: () => {},
 };
 
 function insideViewport(data) {
   const { popper } = data.offsets;
   const { width, height } = popper;
-  let {
-    top, right, bottom, left,
-  } = popper;
+  let { top, right, bottom, left } = popper;
   const scrollTop = getScroll(global.document.documentElement, 'top');
   const scrollLeft = getScroll(global.document.documentElement, 'left');
   const viewportWidth = global.document.documentElement.clientWidth;
@@ -338,7 +345,11 @@ function insideViewport(data) {
     offsets: {
       ...data.offsets,
       popper: {
-        ...popper, top, right, bottom, left,
+        ...popper,
+        top,
+        right,
+        bottom,
+        left,
       },
     },
   };
@@ -350,9 +361,10 @@ function scrollViewport(axis, spotShape, spotOffset) {
   const edgeProp = axis === 'x' ? 'right' : 'bottom';
   const horizontal = axis === 'x';
   const scrollSize = getScroll(global.document.documentElement, offsetProp);
-  const viewportSize = axis === 'x'
-    ? global.document.documentElement.clientWidth
-    : global.document.documentElement.clientHeight;
+  const viewportSize =
+    axis === 'x'
+      ? global.document.documentElement.clientWidth
+      : global.document.documentElement.clientHeight;
 
   let offsetSize;
   let spotEdge;
@@ -367,19 +379,27 @@ function scrollViewport(axis, spotShape, spotOffset) {
   }
 
   if (scrollSize + viewportSize < spotEdge) {
-    animateScrollTo(Math.max(spotEdge - viewportSize, 0), { horizontal, offset: SCROLL_OFFSET });
+    animateScrollTo(Math.max(spotEdge - viewportSize, 0), {
+      horizontal,
+      offset: SCROLL_OFFSET,
+    });
   } else if (offsetSize < scrollSize) {
-    animateScrollTo(Math.max(offsetSize, 0), { horizontal, offset: -SCROLL_OFFSET });
+    animateScrollTo(Math.max(offsetSize, 0), {
+      horizontal,
+      offset: -SCROLL_OFFSET,
+    });
   }
 }
 
-function createCircleSvgStyle(popperOffset: popper$Offset) {
-  const wc = (popperOffset.width / 2);
-  const hc = (popperOffset.height / 2);
+function createCircleSvgStyle(popperOffset) {
+  const wc = popperOffset.width / 2;
+  const hc = popperOffset.height / 2;
   // const rad = wc + (SPOT_MARGIN * 2);
   const cx = popperOffset.left + wc;
   const cy = popperOffset.top + hc;
-  const r = Math.max((popperOffset.width + popperOffset.height) / 4, SPOT_MIN_RADIUS) + SPOT_MARGIN;
+  const r =
+    Math.max((popperOffset.width + popperOffset.height) / 4, SPOT_MIN_RADIUS) +
+    SPOT_MARGIN;
   return {
     x: cx - r,
     y: cy - r,
@@ -390,12 +410,12 @@ function createCircleSvgStyle(popperOffset: popper$Offset) {
   };
 }
 
-function createRectSvgStyle(popperOffset: popper$Offset) {
+function createRectSvgStyle(popperOffset) {
   return {
     x: popperOffset.left - SPOT_MARGIN,
     y: popperOffset.top - SPOT_MARGIN,
-    width: popperOffset.width + (SPOT_MARGIN * 2),
-    height: popperOffset.height + (SPOT_MARGIN * 2),
+    width: popperOffset.width + SPOT_MARGIN * 2,
+    height: popperOffset.height + SPOT_MARGIN * 2,
   };
 }
 
