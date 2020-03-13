@@ -35,8 +35,8 @@
     "moduleLoader": "./src/aliasedModuleLoader.js"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.56",
