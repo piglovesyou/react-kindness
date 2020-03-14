@@ -1,10 +1,13 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import webpack from "webpack";
+import path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
   template: path.join(__dirname, 'examples/src/index.html'),
   filename: './index.html'
 });
-module.exports = {
+
+const config: webpack.Configuration = {
   entry: path.join(__dirname, 'examples/src/index.js'),
   output: {
     path: path.join(__dirname, 'examples/dist'),
@@ -33,5 +36,7 @@ module.exports = {
   devServer: {
     port: 3000
   },
-  devtool: 'cheap-module-inline-source-map',
+  devtool: 'cheap-module-eval-source-map',
 };
+
+export default config;
