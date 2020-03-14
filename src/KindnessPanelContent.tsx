@@ -7,7 +7,7 @@ import {
   panelMessageClassName,
   panelTitleClassName,
 } from './classNames';
-import EventEmitter = NodeJS.EventEmitter;
+import {EventEmitter} from 'events'
 
 type KindnessPanelContentProps = {
   title: ReactElementLike,

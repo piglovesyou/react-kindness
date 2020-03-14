@@ -21,11 +21,21 @@ const config: webpack.Configuration = {
         use: {
           loader: 'babel-loader',
           options: {
-            "presets": [
+            presets: [
               "@babel/preset-env",
               "@babel/react",
               "@babel/preset-typescript",
             ],
+            "plugins": [
+              "@babel/plugin-transform-runtime",
+              "@babel/plugin-proposal-class-properties",
+              // [
+              //   "@babel/plugin-proposal-class-properties",
+              //   {
+              //     "loose": false
+              //   }
+              // ]
+            ]
           },
         },
       },
