@@ -9,9 +9,8 @@ script:
 # - npm audit
 
 node_js:
+  - '12'
   - '10'
-  - '9'
-  - '8'
 
 dist: trusty
 sudo: required
