@@ -48,7 +48,6 @@ describe('<KindnessPanel />', function describe() {
     );
     app.setProps({ enabled: String(true) });
     await timeout(500); // Wait for transition
-    // assert(document.querySelector('.react-kindness'));
     assert(document.querySelector('[class^="react-kindness"]'));
     deepStrictEqual(
       getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
@@ -89,13 +88,13 @@ describe('<KindnessPanel />', function describe() {
       '1',
     );
 
-    // const nextEl = app.find('.react-kindness-panel__bottombar button').last();
-    // nextEl.simulate('click');
-    // await timeout(500); // Wait for transition
-    // deepStrictEqual(
-    //   getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
-    //   '0',
-    // );
+    const nextEl = app.find('.react-kindness-panel__bottombar button').last();
+    nextEl.simulate('click');
+    await timeout(500); // Wait for transition
+    deepStrictEqual(
+      getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
+      '0',
+    );
   });
 
   it('can initially shows on componentDidMount', async () => {
