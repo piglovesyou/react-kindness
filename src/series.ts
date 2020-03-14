@@ -1,23 +1,25 @@
-export class Series extends Map {
-  getOrderKeyByIndex(index) {
-    const key = [...this.keys()].sort()[index];
+import Kindness from './Kindness';
+
+export class Series extends Map<number, Kindness> {
+  getOrderKeyByIndex(index: number) {
+    const key = Array.from(this.keys()).sort()[index];
     if (typeof key !== 'number') return -1;
     return key;
   }
 
-  hasKindnessByIndex(index) {
+  hasKindnessByIndex(index: number) {
     const key = this.getOrderKeyByIndex(index);
     return this.has(key);
   }
 
-  getKindnessByIndex(index) {
+  getKindnessByIndex(index: number) {
     const key = this.getOrderKeyByIndex(index);
     const k = this.get(key);
     if (!k) return null;
     return k;
   }
 
-  getKindnessElementByIndex(index) {
+  getKindnessElementByIndex(index: number) {
     const k = this.getKindnessByIndex(index);
     if (!k) return null;
     return k.ref.current;
@@ -26,7 +28,7 @@ export class Series extends Map {
   /**
    * Returns order key for later use.
    */
-  append(k) {
+  append(k: Kindness) {
     const lastKey = this.getOrderKeyByIndex(this.size - 1);
     if (lastKey < 0) {
       this.set(0, k);
@@ -39,7 +41,7 @@ export class Series extends Map {
 }
 
 export class SeriesPool extends Map {
-  getOrCreate(key) {
+  getOrCreate(key: string) {
     const existing = this.get(key);
     if (existing) return existing;
     const created = new Series();

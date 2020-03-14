@@ -1,5 +1,3 @@
-//
-
 import webpack from 'webpack';
 import middleware from 'webpack-dev-middleware';
 import express from 'express';
@@ -20,6 +18,7 @@ export function launchApp() {
 
   app.use(
     middleware(compiler, {
+      publicPath: '',
       // webpack-dev-middleware options
     }),
   );

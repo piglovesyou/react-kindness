@@ -1,5 +1,3 @@
-//
-
 export const rootClassName = 'react-kindness';
 export const svgClassName = `${rootClassName}__svg`;
 export const overlayClassName = `${rootClassName}__overlay`;

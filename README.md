@@ -1,4 +1,4 @@
-# react-kindness [![Build Status](https://travis-ci.org/piglovesyou/react-kindness.svg?branch=master)](https://travis-ci.org/piglovesyou/react-kindness)
+# react-kindness ![Node CI](https://github.com/piglovesyou/react-kindness/workflows/Node%20CI/badge.svg)
 
 A lightweight, fully-customizable kind screen guide for React
 
@@ -10,13 +10,13 @@ A lightweight, fully-customizable kind screen guide for React
 
 To install
 
-```js
+```bash
 $ npm install --save react-kindness
 ```
 
 Put this somewhere in your component tree,
 
-```js
+```typescript jsx
 import {KindnessPanel, Kindness} from 'react-kindness';
 import 'react-kindness/dist/index.css';
 
@@ -27,7 +27,7 @@ import 'react-kindness/dist/index.css';
 
 then point out some elements that you want your guests to focus on
 
-```js
+```typescript jsx
 <Kindness>
     <input type="text" {...} />
 </Kindness>
@@ -41,8 +41,8 @@ When the `<KindnessPanel />` becomes `enabled={true}`, the screen guide starts.
 
 ## Props of `<KindnessPanel />`
 
-```js
-opaque type SeriesId = string;
+```typescript jsx
+type SeriesId = string;
 
 type KindnessPanelProps = {|
   enabled: boolean,
@@ -60,7 +60,7 @@ type KindnessPanelProps = {|
 
 ## Props of `<Kindness />`
 
-```js
+```typescript jsx
 type KindnessProps = {|
   children: mixed,
   shape?: 'circle' | 'rect', // Use <KindnessPanel shape={} /> by default and being able to override it
@@ -75,7 +75,7 @@ type KindnessProps = {|
 
 By default `<KindnessPanel />` uses `<KindnessPanelContent />` internally. By passing a function as a child, you can customize the content.
 
-```js
+```typescript jsx
 <KindnessPanel enabled={true}>
     {
         ({totalSize, currentIndex, goPrev, goNext}) => (
@@ -91,7 +91,7 @@ By default `<KindnessPanel />` uses `<KindnessPanelContent />` internally. By pa
 
 Properties of the argument is these:
 
-```js
+```typescript jsx
 type KindnessPanelContentArgs = {|
   title: mixed,
   message: mixed,
@@ -109,7 +109,7 @@ type KindnessPanelContentArgs = {|
 
 When you pass a function to `<Kindness />` as a child, you can use additional variables.
 
-```js
+```typescript jsx
 <Kindness>
     { (focused) => <div style={focused && {fontWeight: 'bold'}}>yeah</div> }
 </Kindness>

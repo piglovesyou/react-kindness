@@ -1,8 +1,22 @@
-import React from 'react';
-
+import React, { ReactNode } from 'react';
 import { seriesPool } from './series';
+import { SpotShapes } from './types';
 
-export default class Kindness extends React.Component {
+export type KindnessProps = {
+  shape?: SpotShapes;
+  order?: 'auto' | number;
+  seriesId?: 'default';
+  title?: string;
+  message?: string;
+  children: ReactNode;
+};
+
+export default class Kindness extends React.Component<KindnessProps> {
+  static defaultProps = {
+    order: 'auto',
+    seriesId: 'default',
+  };
+
   constructor(props) {
     if (!props.seriesId) throw new Error('never');
     super(props);
@@ -35,16 +49,23 @@ export default class Kindness extends React.Component {
   render() {
     const { children } = this.props;
     const child = React.Children.only(children);
-    return React.cloneElement(child, {
+    if (
+      !child ||
+      typeof child === 'string' ||
+      typeof child === 'number' ||
+      typeof child === 'boolean'
+    )
+      throw new Error('Specify children.');
+    return React.cloneElement(child as Exclude<typeof child, {}>, {
       ref: this.ref,
     });
   }
 }
 
-Kindness.defaultProps = {
-  shape: null,
-  order: 'auto',
-  seriesId: 'default',
-  title: null,
-  message: null,
-};
+// Kindness.defaultProps = {
+//   shape: null,
+//   order: 'auto',
+//   seriesId: 'default',
+//   title: null,
+//   message: null,
+// };

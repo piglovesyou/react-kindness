@@ -45,32 +45,32 @@
   opacity: 0;
 }
 
-.react-kindness--exit-done .react-kindness__svg,
-.react-kindness--exit-done .react-kindness-panel {
+.react-kindness-exit-done .react-kindness__svg,
+.react-kindness-exit-done .react-kindness-panel {
   display: none;
 }
 
-.react-kindness--enter .react-kindness__svg,
-.react-kindness--enter .react-kindness-panel {
+.react-kindness-enter .react-kindness__svg,
+.react-kindness-enter .react-kindness-panel {
   opacity: 0;
 }
 
-.react-kindness--enter-active .react-kindness__svg,
-.react-kindness--enter-done .react-kindness__svg,
-.react-kindness--enter-active .react-kindness-panel,
-.react-kindness--enter-done .react-kindness-panel {
+.react-kindness-enter-active .react-kindness__svg,
+.react-kindness-enter-done .react-kindness__svg,
+.react-kindness-enter-active .react-kindness-panel,
+.react-kindness-enter-done .react-kindness-panel {
   opacity: 1 !important;
 }
 
-.react-kindness--exit .react-kindness__svg,
-.react-kindness--exit .react-kindness-panel {
+.react-kindness-exit .react-kindness__svg,
+.react-kindness-exit .react-kindness-panel {
   opacity: 0
 }
 
-.react-kindness--exit-active .react-kindness__svg,
-.react-kindness--exit-done .react-kindness__svg,
-.react-kindness--exit-active .react-kindness-panel,
-.react-kindness--exit-done .react-kindness-panel {
+.react-kindness-exit-active .react-kindness__svg,
+.react-kindness-exit-done .react-kindness__svg,
+.react-kindness-exit-active .react-kindness-panel,
+.react-kindness-exit-done .react-kindness-panel {
   opacity: 0;
 }
 
@@ -78,11 +78,11 @@
  * Spot
  */
 
-.react-kindness--enter-active {
+.react-kindness-enter-active {
   transition: none;
 }
 
-.react-kindness--enter-done .react-kindness__spot {
+.react-kindness-enter-done .react-kindness__spot {
   transition:
   x var(--transition-delay),
   y var(--transition-delay),
