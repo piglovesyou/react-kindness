@@ -1,4 +1,4 @@
-# react-kindness ![Node CI](https://github.com/piglovesyou/react-kindness/workflows/Node%20CI/badge.svg)
+# react-kindness [![Node CI](https://github.com/piglovesyou/react-kindness/workflows/Node%20CI/badge.svg)](https://github.com/piglovesyou/react-kindness/actions)
 
 A lightweight, fully-customizable kind screen guide for React
 
@@ -42,33 +42,36 @@ When the `<KindnessPanel />` becomes `enabled={true}`, the screen guide starts.
 ## Props of `<KindnessPanel />`
 
 ```typescript jsx
-type SeriesId = string;
-
-type KindnessPanelProps = {|
+type KindnessPanelProps = {
   enabled: boolean,
   onExit: () => void,
-  shape?: 'circle' | 'rect', // 'circle' by default
-  initialIndex?: number, // 0 by default
-  children?: (KindnessPanelContentArgs) => React.Component,
-  seriesId?: SeriesId, // 'default' by default
-  onClickOutside?: () => ?boolean, // () => {} by default.
-                                   // If false was returned, react-kindness
-                                   // tries to disable user interactions.
-|};
+  shape?: 'circle' | 'rect',  // 'circle' by default
+  initialIndex?: number,      // 0 by default
+  children?: (args: KindnessPanelContentArgs) => React.Component,
+                              // <KindnessPanelContent /> by default
+                              // Useful if you're customize panel content
+  seriesId?: string,          // 'default' by default
+                              // Useful if you're having multiple
+                              // series of tutorial
+  onClickOutside?: (e: MouseEvent) => void | boolean,
+                              // () => {} by default
+                              // If false was returned, react-kindness
+                              // stops event propagation
+};
 ```
 
 
 ## Props of `<Kindness />`
 
 ```typescript jsx
-type KindnessProps = {|
-  children: mixed,
-  shape?: 'circle' | 'rect', // Use <KindnessPanel shape={} /> by default and being able to override it
-  title?: mixed, // null by default
-  message?: mixed, // null by default
-  order?: number | 'auto', // 'auto' by default
-  seriesId?: SeriesId, // 'default' by default
-|}
+type KindnessProps = {
+  children: ReactNode,        // Required
+  shape?: 'circle' | 'rect',  // By default it's what panel says. Able to override it
+  title?: ReactNode,          // null by default
+  message?: ReactNode,        // null by default
+  order?: number | 'auto',    // 'auto' by default. Affect to steps order
+  seriesId?: SeriesId,        // 'default' by default
+}
 ```
 
 ## Customizing a panel content
@@ -76,9 +79,21 @@ type KindnessProps = {|
 By default `<KindnessPanel />` uses `<KindnessPanelContent />` internally. By passing a function as a child, you can customize the content.
 
 ```typescript jsx
+type KindnessPanelContentArgs = {
+  title: ReactNode;
+  message: ReactNode;
+  totalSize: number;
+  currentIndex: number;
+  goPrev: () => void;
+  goNext: () => void;
+  skip: () => void;
+  goIndex: (number) => void;
+  transitionEmitter: EventEmitter;
+};
+
 <KindnessPanel enabled={true}>
     {
-        ({totalSize, currentIndex, goPrev, goNext}) => (
+        ({totalSize, currentIndex, goPrev, goNext}: KindnessPanelContentArgs) => (
             <div>
                 <h3>{`This is ${currentIndex + 1} of ${totalSize} item.`}</h3>
                 <button onClick={goPrev}>Go previous</button>
@@ -91,21 +106,7 @@ By default `<KindnessPanel />` uses `<KindnessPanelContent />` internally. By pa
 
 Properties of the argument is these:
 
-```typescript jsx
-type KindnessPanelContentArgs = {|
-  title: mixed,
-  message: mixed,
-  totalSize: number,
-  currentIndex: number,
-  goPrev: () => void,
-  goNext: () => void,
-  skip: () => void,
-  goIndex: (number) => void,
-  transitionEmitter: EventEmitter,
-|};
-```
-
-## (wip) Get additional variables from `<Kindness />`
+## (TODO) Get additional variables from `<Kindness />`
 
 When you pass a function to `<Kindness />` as a child, you can use additional variables.
 
@@ -128,6 +129,7 @@ When you pass a function to `<Kindness />` as a child, you can use additional va
 - [x] Disabling user interactions `onClickOutside`
 - [x] feat: `<Kindness shape={'circle'|'rect'} />` with smooth spot transition of each
 - [x] mod: Scroll to a target with decent margin even with circle spot
+- [x] 0.5.0 TypeScript implementation
 - [ ] Accept a function as a child to `<Kindness />`
 
 ## License

@@ -1,5 +1,4 @@
-import { ReactElementLike } from 'prop-types';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
   classnames,
   panelArrowClassName,
@@ -10,8 +9,8 @@ import {
 import { EventEmitter } from 'events';
 
 type KindnessPanelContentProps = {
-  title: ReactElementLike;
-  message: ReactElementLike;
+  title: ReactNode;
+  message: ReactNode;
   totalSize: number;
   currentIndex: number;
   goPrev: () => void;

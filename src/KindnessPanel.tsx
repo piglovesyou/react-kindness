@@ -1,4 +1,4 @@
-import React, { ReactChildren } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Popper from 'popper.js';
@@ -27,13 +27,12 @@ import {
 import { SpotShapes } from './types';
 
 type KindnessPanelProps = {
+  enabled: boolean;
+  onExit: () => void;
   initialIndex: number;
   shape: SpotShapes;
   seriesId: string;
-  enabled: boolean;
-  onClickOutside?: any;
-  onExit: any;
-  children: () => ReactChildren;
+  onClickOutside: (e: MouseEvent) => void | boolean;
 };
 
 type KindnessPanelState = {
@@ -56,10 +55,10 @@ export default class KindnessPanel extends React.Component<
   onWindowResize: () => void;
 
   static defaultProps = {
-    enabled: false,
     initialIndex: 0,
     shape: 'circle',
     seriesId: 'default',
+    onClickOutside: () => {},
     // eslint-disable-next-line react/display-name
     children: panelContentProps => (
       <KindnessPanelContent {...panelContentProps} />
@@ -111,7 +110,7 @@ export default class KindnessPanel extends React.Component<
     if (!this.series.hasKindnessByIndex(this.spotIndex)) return;
     const kEl = this.series.getKindnessElementByIndex(this.spotIndex);
     if (this.panel.contains(e.target) || kEl.contains(e.target)) return;
-    const rv = onClickOutside && onClickOutside(e);
+    const rv = onClickOutside(e);
 
     if (rv === false) {
       // Block the user interaction
