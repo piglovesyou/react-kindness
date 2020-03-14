@@ -117,12 +117,9 @@
   "scripts": {
     "lint": "eslint --ext .ts,.tsx,.js src examples/src",
     "fix": "eslint --ext .ts,.tsx,.js src examples/src --fix",
-    "webpack": "webpack",
     "transpile": "babel src -d dist --copy-files",
-    "build": "webpack --mode production",
-    "gh-pages": "gh-pages -d examples/dist",
     "prepublishOnly": "npm run lint && npm test && npm run transpile",
-    "publish-demo": "npm run build && npm run gh-pages",
+    "publish-demo": "webpack --mode production && gh-pages -d demo",
     "start": "webpack-dev-server --mode development",
     "dev": "karma start",
     "test": "CI=true karma start"
