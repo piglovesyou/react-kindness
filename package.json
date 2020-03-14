@@ -115,8 +115,8 @@
     "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
-    "lint": "eslint --ext .ts,.tsx,.js src examples/src",
-    "fix": "eslint --ext .ts,.tsx,.js src examples/src --fix",
+    "lint": "eslint --ext .ts,.tsx,.js src examples/basic",
+    "fix": "eslint --ext .ts,.tsx,.js src examples/basic --fix",
     "transpile": "babel src -d dist --copy-files",
     "prepublishOnly": "npm run lint && npm test && npm run transpile",
     "publish-demo": "webpack --mode production && gh-pages -d demo",

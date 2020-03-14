@@ -3,12 +3,12 @@ import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
-  template: path.join(__dirname, 'examples/src/index.html'),
+  template: path.join(__dirname, 'examples/basic/index.html'),
   filename: './index.html'
 });
 
 const config: webpack.Configuration = {
-  entry: path.join(__dirname, 'examples/src/index.js'),
+  entry: path.join(__dirname, 'examples/basic/index.js'),
   output: {
     path: path.join(__dirname, 'demo'),
     filename: 'bundle.js'

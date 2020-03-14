@@ -5,7 +5,7 @@ coverage
 node_modules
 npm-debug.log
 /*.iml
-dist
+/dist
 /demo
 .DS_Store
 yarn-error.log
