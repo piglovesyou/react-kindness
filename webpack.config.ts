@@ -16,9 +16,18 @@ const config: webpack.Configuration = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        use: 'babel-loader',
+        test: /\.(j|t)sx?$/,
         exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            "presets": [
+              "@babel/preset-env",
+              "@babel/react",
+              "@babel/preset-typescript",
+            ],
+          },
+        },
       },
       {
         test: /\.css$/,
@@ -31,7 +40,7 @@ const config: webpack.Configuration = {
   },
   plugins: [htmlWebpackPlugin],
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   devServer: {
     port: 3000

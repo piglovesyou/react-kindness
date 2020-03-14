@@ -14,13 +14,16 @@ const config = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'karma-typescript'],
+    frameworks: [
+      'mocha',
+      // 'karma-typescript'
+    ],
 
 
     // list of files / patterns to load in the browser
     files: [
-      'src/**/*.spec.js',
-      'src/**/*.spec.ts',
+      // 'src/**/*.spec.js',
+      // 'src/**/*.spec.ts',
       'src/**/*.spec.tsx',
     ],
 
@@ -33,8 +36,8 @@ const config = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.ts': [ 'karma-typescript' ],
-      'src/**/*.tsx': [ 'karma-typescript' ],
+      '**/*.ts': [ 'webpack' ],
+      '**/*.tsx': [ 'webpack' ],
     },
 
 
@@ -47,7 +50,10 @@ const config = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: [
+      'progress',
+      // 'karma-typescript',
+    ],
 
 
     // web server port
@@ -76,13 +82,18 @@ const config = function(config) {
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: isCI,
 
+
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
+
     karmaTypescriptConfig: {
-      tsconfig: "./tsconfig.json"
-    }
+      tsconfig: "tsconfig.json"
+    },
+
+
+    browserNoActivityTimeout: 10 *1000,
   })
 };
 export default config;
