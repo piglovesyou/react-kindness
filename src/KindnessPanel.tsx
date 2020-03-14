@@ -25,8 +25,6 @@ import {
   insideViewport,
 } from './lib/fns';
 
-// const global = global || window;
-
 type KindnessPanelProps = {
   initialIndex: number;
   shape: string;
