@@ -39,39 +39,50 @@ type KindnessPanelProps = {
 
 type KindnessPanelState = {
   spotOffset: number | null,
-  overlayStyle: {
-
-  }
+  overlayStyle: any;
 }
 
 export default class KindnessPanel extends React.Component<KindnessPanelProps, KindnessPanelState> {
-  spotIndex: number;
+
+  spotIndex: number = -1;
   series: Series;
-  isViewportEventObserved: boolean;
+  isViewportEventObserved: boolean = false;
   panel: HTMLDivElement | null = null; // React.Ref<HTMLDivElement>;
   spot: SVGRectElement | null = null; // React.Ref<SVGRectElement>;
   svg: SVGElement | null = null; // React.Ref<SVGElement>;
   popper: Popper | null = null;
-  transitionEmitter: EventEmitter;
+  transitionEmitter: EventEmitter =new EventEmitter();
   onWindowResize: () => void;
+
+  static defaultProps = {
+    enabled: false,
+    initialIndex: 0,
+    shape: 'circle',
+    seriesId: 'default',
+    // eslint-disable-next-line react/display-name
+    children: panelContentProps => (
+      <KindnessPanelContent {...panelContentProps} />
+    ),
+    onClickOutside: () => {},
+  };
 
   constructor(props) {
     // if (!props.seriesId) throw new Error('never');
     super(props);
 
+    this.series = seriesPool.getOrCreate(props.seriesId);
     this.state = {
       spotOffset: null,
       overlayStyle: {},
     };
 
-    this.spotIndex = -1;
-    this.series = seriesPool.getOrCreate(props.seriesId);
-    this.isViewportEventObserved = false;
+    // this.spotIndex = -1;
+    // this.isViewportEventObserved = false;
     // this.popper = null;
     // this.panel = null; React.createRef();
     // this.spot = null; React.createRef();
     // this.svg = React.createRef();
-    this.transitionEmitter = new EventEmitter();
+    // this.transitionEmitter = new EventEmitter();
 
     this.onWindowResize = debounce(this.updateOverlayStyle, 10);
   }
@@ -289,64 +300,49 @@ export default class KindnessPanel extends React.Component<KindnessPanelProps, K
       <CSSTransition
         in={wasMounted && enabled}
         timeout={OVERLAY_TRANSITION_DELAY}
-        classNames={`${rootClassName}-`}
+        classNames={`${rootClassName} ${rootClassName}-`}
         onEntered={() => this.transitionEmitter.emit('onEntered')}
         onExited={this.onOverlayDisapeared}
       >
-        {() => (
-          <React.Fragment>
-            <div className={classnames(rootClassName)}>
-              <svg
-                ref={(e) => this.svg = e}
-                className={svgClassName}
-                style={overlayStyle}
-                width="100%"
-                height="100%"
-              >
-                <filter id="blurFilter">
-                  <feGaussianBlur
-                    in="SourceGraphic"
-                    stdDeviation={BLUR_STD_DEVIATION}
+        <div>
+            <svg
+              ref={(e) => this.svg = e}
+              className={svgClassName}
+              style={overlayStyle}
+              width="100%"
+              height="100%"
+            >
+              <filter id="blurFilter">
+                <feGaussianBlur
+                  in="SourceGraphic"
+                  stdDeviation={BLUR_STD_DEVIATION}
+                />
+              </filter>
+              <mask id="spot">
+                <g fill="black">
+                  <rect x="0" y="0" width="100%" height="100%" fill="white" />
+                  <rect
+                    className={spotClassName}
+                    ref={this.spot}
+                    fill="black"
+                    filter="url(#blurFilter)"
+                    {...(spotOffset ? spotStyle : null)}
                   />
-                </filter>
-                <mask id="spot">
-                  <g fill="black">
-                    <rect x="0" y="0" width="100%" height="100%" fill="white" />
-                    <rect
-                      className={spotClassName}
-                      ref={this.spot}
-                      fill="black"
-                      filter="url(#blurFilter)"
-                      {...(spotOffset ? spotStyle : null)}
-                    />
-                  </g>
-                </mask>
-                <rect className={overlayClassName} mask="url(#spot)" />
-              </svg>
-              <div ref={(e) => this.panel = e} className={panelClassName}>
-                {
-                  // @ts-ignore
-                  children(panelContentProps)
-                }
-              </div>
+                </g>
+              </mask>
+              <rect className={overlayClassName} mask="url(#spot)" />
+            </svg>
+            <div ref={(e) => this.panel = e} className={panelClassName}>
+              {
+                // @ts-ignore
+                children(panelContentProps)
+              }
             </div>
-          </React.Fragment>
-        )}
+          </div>
       </CSSTransition>,
       window.document.body,
     );
   }
-
-  static defaultProps = {
-    initialIndex: 0,
-    shape: 'circle',
-    seriesId: 'default',
-    // eslint-disable-next-line react/display-name
-    children: panelContentProps => (
-      <KindnessPanelContent {...panelContentProps} />
-    ),
-    onClickOutside: () => {},
-  };
 
 }
 

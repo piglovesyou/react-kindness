@@ -75,8 +75,8 @@ const config = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    // browsers: [ isCI ? 'ChromeHeadless' : 'Chrome' ],
-    browsers: [ 'ChromeHeadless' ],
+    browsers: [ isCI ? 'ChromeHeadless' : 'Chrome' ],
+    // browsers: [ 'ChromeHeadless' ],
 
 
     // Continuous Integration mode
