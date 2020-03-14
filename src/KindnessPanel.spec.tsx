@@ -206,7 +206,7 @@ describe('<KindnessPanel />', function describe() {
     );
   });
 
-  it.only('scrolls to the target', async () => {
+  it('scrolls to the target', async () => {
     app = mount(
       <div>
         <KindnessPanel enabled onExit={() => {}} />
