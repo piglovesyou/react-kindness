@@ -132,7 +132,7 @@
   "scripts": {
     "lint": "eslint --ext .ts,.tsx,.js src examples/basic",
     "fix": "eslint --ext .ts,.tsx,.js src examples/basic --fix",
-    "compile": "rimraf dist && tsc --declaration",
+    "compile": "rimraf dist && tsc --declaration --project ./tsconfig.compile.json",
     "start": "webpack-dev-server --mode development",
     "test": "CI=true karma start",
     "publish-demo": "webpack --mode production && gh-pages -d demo",
