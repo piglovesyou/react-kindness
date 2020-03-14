@@ -279,7 +279,7 @@ export default class KindnessPanel extends React.Component<KindnessPanelProps, K
           : createCircleSvgStyle(spotOffset);
     }
 
-    const wasMounted = Boolean(this.spot);
+    const wasMounted = Boolean(this.panel);
     const panelContentProps = {
       title,
       message,
@@ -300,7 +300,7 @@ export default class KindnessPanel extends React.Component<KindnessPanelProps, K
       <CSSTransition
         in={wasMounted && enabled}
         timeout={OVERLAY_TRANSITION_DELAY}
-        classNames={`${rootClassName} ${rootClassName}-`}
+        classNames={rootClassName}
         onEntered={() => this.transitionEmitter.emit('onEntered')}
         onExited={this.onOverlayDisapeared}
       >

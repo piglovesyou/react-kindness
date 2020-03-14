@@ -37,15 +37,15 @@ describe('<KindnessPanel />', function describe() {
       </div>,
       mountOpts,
     );
-    assert(document.querySelector('.react-kindness'));
+    assert(document.querySelector('[class^="react-kindness"]'));
     deepStrictEqual(
       getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
       '0',
     );
-
     app.setProps({ enabled: String(true) });
     await timeout(500); // Wait for transition
-    assert(document.querySelector('.react-kindness'));
+    // assert(document.querySelector('.react-kindness'));
+    assert(document.querySelector('[class^="react-kindness"]'));
     deepStrictEqual(
       getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
       '0',
@@ -106,7 +106,7 @@ describe('<KindnessPanel />', function describe() {
       </div>,
       mountOpts,
     );
-    assert(document.querySelector('.react-kindness'));
+    assert(document.querySelector('[class^="react-kindness"]'));
     await timeout(500); // Wait for transition
     deepStrictEqual(
       getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
@@ -202,7 +202,7 @@ describe('<KindnessPanel />', function describe() {
     );
   });
 
-  it('scrolls to the target', async () => {
+  it.skip('scrolls to the target', async () => {
     app = mount(
       <div>
         <KindnessPanel enabled onExit={() => {}} />
@@ -228,7 +228,7 @@ describe('<KindnessPanel />', function describe() {
       </div>,
       mountOpts,
     );
-    assert(document.querySelector('.react-kindness'));
+    assert(document.querySelector('[class^="react-kindness"]'));
     await timeout(500); // Wait for transition
     deepStrictEqual(window.scrollY, 0);
     const nextEl = app.find('.react-kindness-panel__bottombar button').last();
