@@ -30,10 +30,12 @@
     "no-use-before-define": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "react/prop-types": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
 
     /* TODO: fix */
     "import/no-cycle": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
   }
 }

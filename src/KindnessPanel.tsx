@@ -321,7 +321,7 @@ export default class KindnessPanel extends React.Component<
                 <rect x="0" y="0" width="100%" height="100%" fill="white" />
                 <rect
                   className={spotClassName}
-                  ref={e => this.spot = e}
+                  ref={e => (this.spot = e)}
                   fill="black"
                   filter="url(#blurFilter)"
                   {...(spotOffset ? spotStyle : null)}
