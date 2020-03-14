@@ -22,12 +22,16 @@ describe('<KindnessPanel />', function describe() {
     mountOpts = { attachTo: appContainer };
   });
 
-  afterEach(async () => {});
+  // afterEach(async () => {});
 
   after(async () => {
-    app.unmount();
+    app && app.unmount();
     document.body.removeChild(appContainer);
   });
+
+  it('x', async () => {
+    // app = mount(React.createElement('div'));
+  })
 
   it('shows nothing when no <Kindness />', async () => {
     app = mount(

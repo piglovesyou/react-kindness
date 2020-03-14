@@ -11,6 +11,10 @@ export type KindnessProps = {
 };
 
 export default class Kindness extends React.Component<KindnessProps> {
+  static defaultProps = {
+    seriesId: 'default',
+  };
+
   constructor(props) {
     if (!props.seriesId) throw new Error('never');
     super(props);
