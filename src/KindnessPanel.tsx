@@ -6,7 +6,7 @@ import { getReferenceOffsets, getScroll } from 'popper.js/dist/popper-utils';
 
 import debounce from 'lodash.debounce';
 import animateScrollTo from 'animated-scroll-to';
-import EventEmitter from 'events';
+import {EventEmitter} from 'events';
 
 import { Series, seriesPool } from './series';
 import {

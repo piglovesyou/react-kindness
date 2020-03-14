@@ -1,9 +1,11 @@
 // Karma configuration
 // Generated on Sun Aug 05 2018 09:06:40 GMT+0900 (Japan Standard Time)
 
+import webpackConfig from './webpack.config';
+
 const isCI = process.env.CI === 'true';
 
-module.exports = function(config) {
+const config = function(config) {
 
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -37,7 +39,7 @@ module.exports = function(config) {
 
 
     webpack: {
-      ...require('./webpack.config'),
+      ...webpackConfig,
       mode: isCI ? 'production' : 'development',
     },
 
@@ -82,4 +84,5 @@ module.exports = function(config) {
       tsconfig: "./tsconfig.json"
     }
   })
-}
+};
+export default config;
