@@ -34,8 +34,8 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: yarn install, lint, and test
+      env:
+        CI: true
       run: |
         yarn install --ignore-scripts
         yarn prepublishOnly
-      env:
-        CI: true
