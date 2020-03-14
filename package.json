@@ -121,6 +121,7 @@
     "prepublishOnly": "npm run lint && npm test && npm run transpile",
     "publish-demo": "npm run build && npm run gh-pages",
     "start": "webpack-dev-server --mode development",
+    "dev": "karma start",
     "test": "CI=true karma start"
   }
 }

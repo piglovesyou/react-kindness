@@ -12,6 +12,7 @@ export type KindnessProps = {
 
 export default class Kindness extends React.Component<KindnessProps> {
   static defaultProps = {
+    order: 'auto',
     seriesId: 'default',
   };
 
