@@ -1,4 +1,4 @@
-/* eslint-disable react/no-multi-comp */
+/* eslint-disable react/no-multi-comp, @typescript-eslint/no-empty-function */
 
 import React from 'react';
 import assert, { deepStrictEqual } from 'assert';
@@ -8,6 +8,10 @@ import Adapter from 'enzyme-adapter-react-16';
 import { Kindness, KindnessPanel } from './index';
 
 Enzyme.configure({ adapter: new Adapter() });
+
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 describe('<KindnessPanel />', function describe() {
   this.timeout(30 * 1000);
@@ -202,7 +206,7 @@ describe('<KindnessPanel />', function describe() {
     );
   });
 
-  it.skip('scrolls to the target', async () => {
+  it.only('scrolls to the target', async () => {
     app = mount(
       <div>
         <KindnessPanel enabled onExit={() => {}} />
@@ -243,7 +247,3 @@ describe('<KindnessPanel />', function describe() {
     assert(window.scrollY < lastScrollY);
   });
 });
-
-function timeout(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}

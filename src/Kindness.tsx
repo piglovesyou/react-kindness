@@ -1,12 +1,12 @@
-import React, {ReactNode} from 'react';
+import React, { ReactNode } from 'react';
 import { seriesPool } from './series';
 
 export type KindnessProps = {
-  shape?: null,
-  order?: 'auto' | number,
-  seriesId?: 'default',
-  title?: string,
-  message?: string
+  shape?: null;
+  order?: 'auto' | number;
+  seriesId?: 'default';
+  title?: string;
+  message?: string;
   children: ReactNode;
 };
 
@@ -48,7 +48,13 @@ export default class Kindness extends React.Component<KindnessProps> {
   render() {
     const { children } = this.props;
     const child = React.Children.only(children);
-    if (!child || typeof child === 'string' || typeof child === 'number' || typeof child === 'boolean') throw new Error('Specify children.');
+    if (
+      !child ||
+      typeof child === 'string' ||
+      typeof child === 'number' ||
+      typeof child === 'boolean'
+    )
+      throw new Error('Specify children.');
     return React.cloneElement(child as Exclude<typeof child, {}>, {
       ref: this.ref,
     });

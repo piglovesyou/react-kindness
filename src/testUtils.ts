@@ -18,7 +18,7 @@ export function launchApp() {
 
   app.use(
     middleware(compiler, {
-      publicPath: ''
+      publicPath: '',
       // webpack-dev-middleware options
     }),
   );

@@ -1,4 +1,4 @@
-import { ReactElementLike } from "prop-types";
+import { ReactElementLike } from 'prop-types';
 import React from 'react';
 import {
   classnames,
@@ -7,21 +7,23 @@ import {
   panelMessageClassName,
   panelTitleClassName,
 } from './classNames';
-import {EventEmitter} from 'events'
+import { EventEmitter } from 'events';
 
 type KindnessPanelContentProps = {
-  title: ReactElementLike,
-  message: ReactElementLike,
-  totalSize: number,
-  currentIndex: number,
-  goPrev: () => void,
-  goNext: () => void,
-  skip: () => void,
-  goIndex: (number) => void,
-  transitionEmitter: EventEmitter
-}
+  title: ReactElementLike;
+  message: ReactElementLike;
+  totalSize: number;
+  currentIndex: number;
+  goPrev: () => void;
+  goNext: () => void;
+  skip: () => void;
+  goIndex: (number) => void;
+  transitionEmitter: EventEmitter;
+};
 
-export default class KindnessPanelContent extends React.Component<KindnessPanelContentProps> {
+export default class KindnessPanelContent extends React.Component<
+  KindnessPanelContentProps
+> {
   nextRef: HTMLElement | null = null;
 
   constructor(props) {
@@ -92,11 +94,15 @@ export default class KindnessPanelContent extends React.Component<KindnessPanelC
             Prev
           </button>
           {goNext ? (
-            <button type="button" onClick={goNext} ref={(e) => this.nextRef = e}>
+            <button
+              type="button"
+              onClick={goNext}
+              ref={e => (this.nextRef = e)}
+            >
               Next
             </button>
           ) : (
-            <button type="button" onClick={skip} ref={e => this.nextRef = e}>
+            <button type="button" onClick={skip} ref={e => (this.nextRef = e)}>
               Done
             </button>
           )}

@@ -1,7 +1,6 @@
-import Kindness from "./Kindness";
+import Kindness from './Kindness';
 
 export class Series extends Map<number, Kindness> {
-
   getOrderKeyByIndex(index: number) {
     const key = Array.from(this.keys()).sort()[index];
     if (typeof key !== 'number') return -1;
