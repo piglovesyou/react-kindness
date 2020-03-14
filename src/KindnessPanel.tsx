@@ -30,7 +30,6 @@ type KindnessPanelProps = {
   initialIndex: number;
   shape: SpotShapes;
   seriesId: string;
-  // eslint-disable-next-line react/display-name
   enabled: boolean;
   onClickOutside?: any;
   onExit: any;
@@ -68,7 +67,6 @@ export default class KindnessPanel extends React.Component<
   };
 
   constructor(props) {
-    // if (!props.seriesId) throw new Error('never');
     super(props);
 
     this.series = seriesPool.getOrCreate(props.seriesId);
@@ -76,14 +74,6 @@ export default class KindnessPanel extends React.Component<
       spotOffset: null,
       overlayStyle: {},
     };
-
-    // this.spotIndex = -1;
-    // this.isViewportEventObserved = false;
-    // this.popper = null;
-    // this.panel = null; React.createRef();
-    // this.spot = null; React.createRef();
-    // this.svg = React.createRef();
-    // this.transitionEmitter = new EventEmitter();
 
     this.onWindowResize = debounce(this.updateOverlayStyle, 10);
   }

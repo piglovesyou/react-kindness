@@ -6,15 +6,20 @@ import { platform } from 'os';
 
 const isCI = process.env.CI === 'true';
 let browsers: string[];
-if (!isCI) {
+if (isCI) {
   browsers = ['ChromeHeadless'];
-} else if (platform() === 'darwin') {
-  browsers = ['Safari'];
-} else if (platform().startsWith('win')) {
-  browsers = ['IE'];
-} else if (isCI) {
-  browsers = ['ChromeHeadless'];
+} else {
+  browsers = ['Chrome'];
 }
+// Need more effort to support other platforms/browsers
+//
+// else if (platform() === 'darwin') {
+//   browsers = ['Safari'];
+// } else if (platform().startsWith('win')) {
+//   browsers = ['IE'];
+// } else if (isCI) {
+//   browsers = ['ChromeHeadless'];
+// }
 
 const config = function(config) {
   config.set({
