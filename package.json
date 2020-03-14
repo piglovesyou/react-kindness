@@ -132,10 +132,10 @@
   "scripts": {
     "lint": "eslint --ext .ts,.tsx,.js src examples/basic",
     "fix": "eslint --ext .ts,.tsx,.js src examples/basic --fix",
-    "compile": "babel src -d dist --copy-files",
-    "prepublishOnly": "npm run lint && npm test && npm run compile",
-    "publish-demo": "webpack --mode production && gh-pages -d demo",
+    "compile": "rimraf dist && tsc --declaration",
     "start": "webpack-dev-server --mode development",
-    "test": "karma start"
+    "test": "CI=true karma start",
+    "publish-demo": "webpack --mode production && gh-pages -d demo",
+    "prepublishOnly": "npm run lint && npm test && npm run compile"
   }
 }
