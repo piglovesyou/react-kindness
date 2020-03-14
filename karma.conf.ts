@@ -5,14 +5,16 @@ import webpackConfig from './webpack.config';
 import { platform } from 'os';
 
 const isCI = process.env.CI === 'true';
-const browsers =
-  platform() === 'darwin'
-    ? 'Safari'
-    : platform().startsWith('win')
-    ? 'IE'
-    : isCI
-    ? 'Chrome'
-    : 'ChromeHeadless';
+let browsers: string[];
+if (!isCI) {
+  browsers = ['ChromeHeadless'];
+} else if (platform() === 'darwin') {
+  browsers = ['Safari'];
+} else if (platform().startsWith('win')) {
+  browsers = ['IE'];
+} else if (isCI) {
+  browsers = ['ChromeHeadless'];
+}
 
 const config = function(config) {
   config.set({

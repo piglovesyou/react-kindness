@@ -8,8 +8,9 @@ jobs:
       matrix:
         platform: [
           ubuntu-latest,
-          macos-latest,
-          windows-latest
+# Need more effort to support other platforms/browsers
+#          macos-latest,
+#          windows-latest
         ]
         node-version:
           - 12.x
