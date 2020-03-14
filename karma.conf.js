@@ -31,9 +31,8 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.js': [ 'webpack' ],
-      'src/**/*.ts': [ 'webpack' ],
-      'src/**/*.tsx': [ 'webpack' ],
+      'src/**/*.ts': [ 'karma-typescript' ],
+      'src/**/*.tsx': [ 'karma-typescript' ],
     },
 
 
@@ -77,6 +76,10 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
+
+    karmaTypescriptConfig: {
+      tsconfig: "./tsconfig.json"
+    }
   })
 }

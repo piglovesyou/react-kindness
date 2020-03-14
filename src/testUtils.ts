@@ -1,5 +1,3 @@
-//
-
 import webpack from 'webpack';
 import middleware from 'webpack-dev-middleware';
 import express from 'express';

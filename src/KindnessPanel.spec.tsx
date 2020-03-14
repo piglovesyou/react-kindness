@@ -38,7 +38,7 @@ describe('<KindnessPanel />', function describe() {
     );
     assert(document.querySelector('.react-kindness'));
     deepStrictEqual(
-      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
       '0',
     );
 
@@ -46,13 +46,13 @@ describe('<KindnessPanel />', function describe() {
     await timeout(500); // Wait for transition
     assert(document.querySelector('.react-kindness'));
     deepStrictEqual(
-      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
       '0',
     );
   });
 
   it('shows and hide a panel when <Kindness /> exists', async () => {
-    class App extends React.Component {
+    class App extends React.Component<any, any> {
       constructor(props) {
         super(props);
         this.state = {
@@ -82,7 +82,7 @@ describe('<KindnessPanel />', function describe() {
     app.setState({ showKindness: true });
     await timeout(500); // Wait for transition
     deepStrictEqual(
-      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
       '1',
     );
 
@@ -90,7 +90,7 @@ describe('<KindnessPanel />', function describe() {
     nextEl.simulate('click');
     await timeout(500); // Wait for transition
     deepStrictEqual(
-      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
       '0',
     );
   });
@@ -110,13 +110,13 @@ describe('<KindnessPanel />', function describe() {
     assert(document.querySelector('.react-kindness'));
     await timeout(500); // Wait for transition
     deepStrictEqual(
-      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
       '1',
     );
   });
 
   it('follows order of <Kindness /> on click "next"', async () => {
-    class App extends React.Component {
+    class App extends React.Component<any, any> {
       constructor(props) {
         super(props);
         this.state = {
@@ -198,7 +198,7 @@ describe('<KindnessPanel />', function describe() {
     nextEl.simulate('click');
     await timeout(500); // Wait for transition
     deepStrictEqual(
-      getComputedStyle(document.querySelector('.react-kindness__svg')).opacity,
+      getComputedStyle(document.querySelector('.react-kindness__svg')!).opacity,
       '0',
     );
   });
