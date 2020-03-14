@@ -124,7 +124,7 @@
     }
   },
   "lint-staged": {
-    "*.ts": [
+    "**/*.{ts,tsx}": [
       "yarn fix",
       "git add --force"
     ]

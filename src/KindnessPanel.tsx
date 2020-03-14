@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactChildren } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Popper from 'popper.js';
@@ -24,15 +24,17 @@ import {
   createCircleSvgStyle,
   insideViewport,
 } from './lib/fns';
+import { SpotShapes } from './types';
 
 type KindnessPanelProps = {
   initialIndex: number;
-  shape: string;
+  shape: SpotShapes;
   seriesId: string;
   // eslint-disable-next-line react/display-name
   enabled: boolean;
   onClickOutside?: any;
   onExit: any;
+  children: () => ReactChildren;
 };
 
 type KindnessPanelState = {
@@ -184,8 +186,7 @@ export default class KindnessPanel extends React.Component<
       if (!k) throw new Error('boom');
       const { shape: shapeSpecific } = k.props;
       const { shape: shapeBase } = this.props;
-      scrollViewport('y', shapeSpecific || shapeBase, spotOffset);
-      scrollViewport('x', shapeSpecific || shapeBase, spotOffset);
+      scrollViewport(shapeSpecific || shapeBase, spotOffset);
     }
   }
 

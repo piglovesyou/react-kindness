@@ -1,5 +1,6 @@
 import { getScroll } from 'popper.js/dist/popper-utils';
 import animateScrollTo from 'animated-scroll-to';
+import { SpotShapes } from '../types';
 import { SPOT_MIN_RADIUS, SPOT_MARGIN, SCROLL_OFFSET } from './const';
 
 export function createCircleSvgStyle(popperOffset) {
@@ -39,40 +40,34 @@ export function createOverlayStyle() {
   };
 }
 
-export function scrollViewport(axis, spotShape, spotOffset) {
-  const offsetProp = axis === 'x' ? 'left' : 'top';
-  const sizeProp = axis === 'x' ? 'width' : 'height';
-  const edgeProp = axis === 'x' ? 'right' : 'bottom';
-  const horizontal = axis === 'x';
-  const scrollSize = getScroll(window.document.documentElement, offsetProp);
-  const viewportSize =
-    axis === 'x'
-      ? window.document.documentElement.clientWidth
-      : window.document.documentElement.clientHeight;
+export function scrollViewport(spotShape: SpotShapes, spotOffset) {
+  const scrollTop = getScroll(window.document.documentElement, 'top');
+  const scrollLeft = getScroll(window.document.documentElement, 'left');
 
-  let offsetSize;
-  let spotEdge;
+  const viewportHeight = window.document.documentElement.clientHeight;
+  const viewportWidth = window.document.documentElement.clientWidth;
 
-  if (spotShape === 'rect') {
-    offsetSize = spotOffset[offsetProp];
-    spotEdge = spotOffset[edgeProp];
-  } else {
-    const circleOffset = createCircleSvgStyle(spotOffset);
-    offsetSize = circleOffset[axis];
-    spotEdge = offsetSize + circleOffset[sizeProp];
+  let y: number | null = null;
+  let verticalOffset = 0;
+  if (spotOffset.top < scrollTop) {
+    y = spotOffset.top;
+    verticalOffset = -SCROLL_OFFSET;
+  } else if (scrollTop + viewportHeight < spotOffset.bottom - viewportHeight) {
+    y = spotOffset.bottom - viewportHeight;
+    verticalOffset = SCROLL_OFFSET;
   }
 
-  if (scrollSize + viewportSize < spotEdge) {
-    animateScrollTo(Math.max(spotEdge - viewportSize, 0), {
-      horizontal,
-      offset: SCROLL_OFFSET,
-    });
-  } else if (offsetSize < scrollSize) {
-    animateScrollTo(Math.max(offsetSize, 0), {
-      horizontal,
-      offset: -SCROLL_OFFSET,
-    });
+  let x: number | null = null;
+  let horizontalOffset = 0;
+  if (spotOffset.left < scrollLeft) {
+    x = spotOffset.left;
+    horizontalOffset = -SCROLL_OFFSET;
+  } else if (scrollLeft + viewportWidth < spotOffset.right - viewportWidth) {
+    x = spotOffset.right - viewportWidth;
+    horizontalOffset = SCROLL_OFFSET;
   }
+
+  animateScrollTo([x, y], { verticalOffset, horizontalOffset });
 }
 
 export function insideViewport(data) {

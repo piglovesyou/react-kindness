@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react';
 import { seriesPool } from './series';
+import { SpotShapes } from './types';
 
 export type KindnessProps = {
-  shape?: null;
+  shape?: SpotShapes;
   order?: 'auto' | number;
   seriesId?: 'default';
   title?: string;

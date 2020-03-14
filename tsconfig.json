@@ -65,6 +65,8 @@
   },
   "exclude": [
     "examples",
-    "coverage"
+    "coverage",
+    "demo",
+    "dist"
   ]
 }
